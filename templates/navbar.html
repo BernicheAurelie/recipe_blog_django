@@ -1,0 +1,38 @@
+
+<div class="d-flex bd-highlight bg-dark text-white">
+    {% if user.is_authenticated %}
+      <div class="me-auto p-3 bd-highlight">
+        Aurélie's Corner
+      </div>
+      <div class="p-2 bd-highlight">
+        <a class="nav-link" href="{%url 'recipes'%}">Les recettes</a>
+      </div>
+      <div class="p-2 bd-highlight">
+        <a class="nav-link" href="{%url 'create_recipe'%}">Publier une recette</a>
+      </div>
+      <div class="me-auto p-2 bd-highlight">
+        <a class="nav-link" href="{%url 'my_recipes'%}">Trouve ici tes recettes publiées {{user.username|capfirst}}</a>
+      </div>
+      <form class="d-flex" role="search">
+        <input class="form-control m-2 p-2 bd-highlight" name="recherche" type="search" placeholder="Rechercher" aria-label="Search">
+        <button class="btn btn-dark m-2" type="submit">Rechercher</button>
+      </form>
+      <div class="p-2 bd-highlight"><a class="nav-link" href="/users/deconnexion/">Se déconnecter</a></div>
+
+    {% else %}
+    <div class="me-auto p-3 bd-highlight">
+      Aurélie's Corner
+    </div>
+    <div class="me-auto p-2 bd-highlight">
+      <a class="nav-link" href="/users/inscription/">S'inscrire pour partager ses recettes</a>
+    </div>
+    <div class="me-auto p-2 bd-highlight">
+      <a class="nav-link" href="{%url 'recipes'%}">Les recettes</a>
+    </div>
+    <form class="d-flex" role="search">
+      <input class="form-control m-2 p-2 bd-highlight" name="recherche" type="search" placeholder="Rechercher" aria-label="Search">
+      <button class="btn btn-dark m-2" type="submit">Rechercher</button>
+    </form>
+    {% endif %}
+</div>
+  

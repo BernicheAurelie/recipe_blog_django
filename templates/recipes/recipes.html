@@ -1,0 +1,64 @@
+{% extends 'main.html' %}
+{% block content %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+<br>
+{% comment %} <div class="d-flex justify-content-end m-5">
+<form class="d-flex" role="search">
+    <input class="form-control m-2 p-2 bd-highlight" name="recherche_par_catégorie" type="search" placeholder="Rechercher une catégorie" aria-label="Search">
+    <button class="btn btn-dark m-2" type="submit">Rechercher</button>
+</form>
+</div> {% endcomment %}
+
+<div class="d-flex justify-content-center m-5">
+    <div class="d-flex justify-content-center m-5">
+        <img src="https://www.icone-gif.com/gif/maisons/cuisine/cuisine-gif-082.gif"
+        alt="chef cuisinier">
+    </div>
+    <h1 class="d-flex justify-content-center p-4 m-5"> Cook and Love </h1>
+    <div class="d-flex justify-content-center m-5">
+        <img src="https://www.icone-gif.com/gif/maisons/cuisine/cuisine-gif-076.gif"
+    alt="chef cuisinier">
+    </div>
+</div>
+<h5 class="d-flex justify-content-center m-5">{{message}}</h5>
+<div class="col-8 offset-2 mt-3">
+    <div class="d-flex justify-content-center mb-5">
+        <div class="col-md-7 text-center">
+            {% for post in posts %}
+                <div class="mb-5 border border-dark rounded ">
+                    <div class="d-flex flex-column">
+                        <div class="card card-body border-dark"> <h3>{{post.title}}</h3>
+                            
+                        </div>
+                        <div class="card card-body border-dark"> <h4>Préparation:</h4>
+                            {{post.description}}
+                        </div>
+                        {%if post.image %}
+                            <div class="card card-body border-dark">
+                                <img src="{% get_media_prefix %}{{post.image}}" alt="image" class="img-thumbnail w-25 mx-auto d-block">
+                            </div>
+                        {% endif %}
+                        {% if post.recipe_tag == None %}
+                            <div class="card card-body border-dark"><i>Catégorie non renseignée</i>
+                            </div>
+                        {% else %}
+                            <div class="card card-body border-dark"> {{post.recipe_tag}}
+                            </div>
+                        {% endif %}
+                        <div class="card card-body border-dark"> 
+                            {%if not post.time_created == post.last_updated %}
+                                <i>publiée par {{post.user}} le {{post.time_created|date:"d M Y"}} (mise à jour le {{post.last_updated|date:"d M Y"}})</i>
+                            {% elif post.time_created == post.last_updated %}
+                                <i>publiée par {{post.user}} le {{post.time_created|date:"d M Y"}}</i>
+                            {%endif%}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+</br>
+
+{% endblock %}
