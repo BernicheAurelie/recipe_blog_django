@@ -15,7 +15,7 @@ def recipes_index(request):
     if request.method == "GET":
         name = request.GET.get("recherche")
         if name is not None:
-            recipes = Recipe.objects.filter(Q(title__icontains=name)| Q(description__icontains=name)|Q(recipe_tag__icontains=name))
+            recipes = Recipe.objects.filter(Q(title__icontains=name)| Q(ingredients__icontains=name)| Q(description__icontains=name)|Q(recipe_tag__icontains=name))
             if not recipes:
                 message = "Il n'y a pas encore de recette correspondant à la recherche."
                 context = {"titre": titre,'message':message}
@@ -40,7 +40,7 @@ def my_recipes(request):
         if request.method == "GET":
             name = request.GET.get("recherche")
             if name is not None:
-                recipes = Recipe.objects.filter(Q(title__icontains=name)| Q(description__icontains=name)|Q(recipe_tag__icontains=name))
+                recipes = Recipe.objects.filter(Q(title__icontains=name)| Q(ingredients__icontains=name)| Q(description__icontains=name)|Q(recipe_tag__icontains=name))
                 if not recipes:
                     message = "Il n'y a pas encore de recette correspondant à la recherche."
                     context = {"titre": titre,'message':message}
