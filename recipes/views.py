@@ -90,6 +90,7 @@ def modifyRecipe(request, recipe_id=int):
         form = CreateRecipe(request.POST, request.FILES)
         if form.is_valid():
             recipe.title = form.cleaned_data['title']
+            recipe.ingredients = form.cleaned_data['ingredients']
             recipe.description = form.cleaned_data['description']
             if form.cleaned_data['image'] is False:
                 recipe.image = None
