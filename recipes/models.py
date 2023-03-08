@@ -3,8 +3,8 @@ from django.conf import settings
 
 
 class Recipe(models.Model):
-    title = models.CharField(max_length=128, null=True)
-    ingredients = models.TextField(max_length=2048, blank=True, null=True)
+    title = models.CharField(max_length=128)
+    ingredients = models.TextField(max_length=400, blank=True, null=True)
     description = models.TextField(max_length=2048, blank=True, null=True)
     user = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     image = models.ImageField(upload_to='images/', null=True, blank=True)

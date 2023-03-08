@@ -5,6 +5,9 @@
     .ombre {
         box-shadow: #0040ff 0px 20px 30px, #0040ff 0px -12px 30px, #0040ff 0px 4px 6px, #0040ff 0px 12px 13px, #0040ff 0px -3px 5px;
     }
+	#ingredients {
+		height : 150px;
+	}
 </style>
 
 <div class="d-flex justify-content-center mb-5">
@@ -18,7 +21,7 @@
 						<div class="card card-body border-white"> Titre:
 							{{form.title}}
 						</div>
-						<div class="card card-body border-white"> Ingrédients:
+						<div class="card card-body border-white" id="ingredients"> Ingrédients:
 							{{form.ingredients}}
 						</div>
 						<div class="card card-body border-white"> Description:

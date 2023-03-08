@@ -31,9 +31,15 @@
                         <div class="card card-body border-dark"> <h3>{{post.title}}</h3>
                             
                         </div>
+                        {% if post.ingredients == None %}
+                            <div class="card card-body border-dark">
+                                <i>Détail des ingrédients non précisé</i>
+                            </div>
+                        {% else %}
                         <div class="card card-body border-dark"> <h4>Ingrédients:</h4>
                             {{post.ingredients}}
                         </div>
+                        {% endif %}
                         <div class="card card-body border-dark"> <h4>Préparation:</h4>
                             {{post.description}}
                         </div>
@@ -55,7 +61,24 @@
                             {% elif post.time_created == post.last_updated %}
                                 <i>publiée par {{post.user}} le {{post.time_created|date:"d M Y"}}</i>
                             {%endif%}
+                            <div class="p-3 mb-3 bd-highlight">
+                                <a class="p-2 rounded border border-dark" href="{% url 'create_comment' post.id%}">Commenter</a>
+                            </div>
                         </div>
+                        {% for comment in comments %}
+                            {% if post.commented and comment.recipe.id == post.id%}
+                            <div class="card">
+                                <ul class="list-group list-group-flush">
+                                  <li class="list-group-item">
+                                    
+                                    <h6>{{comment.rating}}/5 &#9755; {{comment.title}}</h6>
+                                    <small>{{comment.description}}</small>
+                                  </li>
+                                </ul>
+                              </div>
+                                
+                            {% endif %}
+                        {% endfor %}   
                     </div>
                 </div>
             {% endfor %}

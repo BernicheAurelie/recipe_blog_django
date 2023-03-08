@@ -22,8 +22,10 @@
     </div>
 </div>
 <div class="d-flex justify-content-center">
-<h3 class="d-flex justify-content-center p-2 m-2">{{titre}}</h3>    
-<h3 class="d-flex justify-content-center p-2 m-2">{{message}}</h3>
+    <h3 class="d-flex justify-content-center p-2 m-2">{{titre}}</h3>    
+</div>
+<div class="d-flex justify-content-center">
+    <h3 class="d-flex justify-content-center p-2 m-2">{{message}}</h3>
 </div>
 <div class="col-8 offset-2 mt-3">
     <div class="d-flex justify-content-center mb-5">
@@ -34,9 +36,15 @@
                         <div class="card card-body border-dark"> <h3>Titre:</h3>
                             {{recipe.title}}
                         </div>
+                        {% if recipe.ingredients == None %}
+                            <div class="card card-body border-dark">
+                                <h5>Détail des ingrédients non précisé</h5>
+                            </div>
+                        {% else %}
                         <div class="card card-body border-dark"> <h3>Ingrédients:</h3>
                             {{recipe.ingredients}}
                         </div>
+                        {% endif %}
                         <div class="card card-body border-dark"> <h3>Description:</h3>
                             {{recipe.description}}
                         </div>

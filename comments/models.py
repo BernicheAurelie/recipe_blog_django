@@ -10,6 +10,8 @@ class Comment(models.Model):
     description = models.TextField(max_length=8192, blank=True)    
     rating = models.PositiveSmallIntegerField(validators=[MinValueValidator(0), MaxValueValidator(5)])
     user = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='images/', null=True, blank=True)
-    time_created = models.DateField(auto_now_add=True)
-    last_updated = models.DateField(auto_now=True)
+    time_created = models.DateTimeField(auto_now_add=True)
+    last_updated = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.title

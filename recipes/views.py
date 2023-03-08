@@ -9,7 +9,7 @@ from .models import Recipe
 
 
 def recipes_index(request):
-    titre = "bienvenue sur notre forum culinaire"
+    titre = "Bienvenue sur notre forum culinaire"
     recipes = Recipe.objects.all()
     comments = Comment.objects.all()
     if request.method == "GET":
@@ -21,13 +21,12 @@ def recipes_index(request):
                 context = {"titre": titre,'message':message}
                 return render(request, 'recipes/recipes.html', context)
     recipes = recipes.annotate(content_type=Value('RECIPE', CharField()))
-    comments = comments.annotate(content_type=Value('COMMENT', CharField()))
-    posts = sorted(
-            chain(recipes, comments),
+    # comments = comments.annotate(content_type=Value('COMMENT', CharField()))
+    posts = sorted(recipes,
             key=lambda post: post.time_created,
             reverse=True
         )
-    context = {"titre": titre, 'posts': posts}
+    context = {"titre": titre, 'posts': posts, 'comments': comments}
     return render(request, 'recipes/recipes.html', context)
 
 @login_required(login_url='connexion')
@@ -42,20 +41,20 @@ def my_recipes(request):
             if name is not None:
                 recipes = Recipe.objects.filter(Q(title__icontains=name)| Q(ingredients__icontains=name)| Q(description__icontains=name)|Q(recipe_tag__icontains=name))
                 if not recipes:
-                    message = "Il n'y a pas encore de recette correspondant à la recherche."
+                    message = "Il n'y a pas encore de recette correspondant à ta recherche. "
                     context = {"titre": titre,'message':message}
                     return render(request, 'recipes/recipes.html', context)
         recipes = sorted(recipes, key=lambda recipe: recipe.time_created,
                 reverse=True)
         context = {"titre": titre, 'recipes': recipes}
     else:
-        message = "Tu n'as jamais publié de recettes"
+        message = "Tu n'as pas encore publié de recette"
         context = {"titre": titre, "message": message, 'recipes': recipes}
     return render(request, 'recipes/my_recipes.html', context)
 
 @login_required(login_url='connexion')
 def createRecipe(request):
-    title = 'Ta recette:'
+    title = 'Décris nous ta recette:'
     if request.method == 'POST':
         form = CreateRecipe(request.POST, request.FILES)
         if form.is_valid():

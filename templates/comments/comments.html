@@ -1,1 +1,39 @@
 {% include 'main.html' %}
+{% block content %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+<div class="d-flex justify-content-center m-5">
+    <div class="d-flex justify-content-center m-5">
+        <img src="https://www.icone-gif.com/gif/maisons/cuisine/cuisine-gif-082.gif"
+        alt="chef cuisinier">
+    </div>
+    <h1 class="d-flex justify-content-center p-4 m-5"> Cook and Love </h1>
+    <div class="d-flex justify-content-center m-5">
+        <img src="https://www.icone-gif.com/gif/maisons/cuisine/cuisine-gif-076.gif"
+    alt="chef cuisinier">
+    </div>
+</div>
+<h5 class="d-flex justify-content-center m-5">{{title}}</h5>
+<div class="d-flex justify-content-center m-5">
+    {% for comment in comments %}
+    <div class="mb-5 border border-dark rounded ">
+        <div class="d-flex flex-column">
+            <div class="card card-body border-dark">
+                <h3>{{comment.recipe}}</h3>
+            </div>
+            <div class="card card-body border-dark">
+                <h3>{{comment.rating}}</h3>
+            </div>
+            <div class="card card-body border-dark">
+                <h3>{{comment.title}}</h3>
+            </div>
+            <div class="card card-body border-dark">
+                <h3>{{comment.description}}</h3>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    
+</div>
+
+{% endblock %}

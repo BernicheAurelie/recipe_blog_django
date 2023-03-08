@@ -78,7 +78,7 @@
 						{%csrf_token%}
 						<div class="input-group mb-3">
 							<div class="input-group-append">
-								<span class="input-group-text"><i class="fas fa-user"></i></span>
+								<span class="input-group-text"><i class="fas fa-user" placeholder="Nom d'utilisateur"></i></span>
 							</div>
 							{{form.username}}
 						</div>
@@ -118,9 +118,9 @@
 
 		//Query All input fields
 		var form_fields = document.getElementsByTagName('input')
-		form_fields[1].placeholder="Nom d'utilisateur...";
-		form_fields[2].placeholder='Mot de passe...';
-		form_fields[3].placeholder='Confirmer Mot de passe...';
+		form_fields[2].placeholder="Nom d'utilisateur...";
+		form_fields[3].placeholder='Mot de passe...';
+		form_fields[4].placeholder='Confirmer Mot de passe...';
 
 
 		for (var field in form_fields){
