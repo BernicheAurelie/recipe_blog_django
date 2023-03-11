@@ -13,8 +13,18 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 import os
 from pathlib import Path
 import environ
+import sentry_sdk
 
 env = environ.Env()
+
+sentry_sdk.init(
+    dsn=env("SENTRY_DSN"),
+
+    # Set traces_sample_rate to 1.0 to capture 100%
+    # of transactions for performance monitoring.
+    # We recommend adjusting this value in production,
+    traces_sample_rate=1.0,
+)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,12 +35,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env("SECRET_KEY")
+# SECRET_KEY = "PDl7iBAgMigSAYN2wPe6kCcVofgm07kLKKO0knBorkC3_8g1PD2H-2LXAcYNNYi8GmLrhpelJkw4tSJZ1W1FaQ"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool('DEBUG')
+# DEBUG = True
 
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS")
-
+# ALLOWED_HOSTS = []
 
 # Application definition
 
