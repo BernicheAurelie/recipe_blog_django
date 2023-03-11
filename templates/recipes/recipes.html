@@ -23,6 +23,11 @@
 </div>
 <h5 class="d-flex justify-content-center m-5">{{message}}</h5>
 <div class="col-8 offset-2 mt-3">
+{% for message in messages%}
+    <div class="d-flex justify-content-center">
+        <h3 id="message" class="d-flex justify-content-center p-2 m-2">{{message}}</h3>
+    </div>
+{% endfor %}
     <div class="d-flex justify-content-center mb-5">
         <div class="col-md-7 text-center">
             {% for post in posts %}
