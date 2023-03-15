@@ -16,6 +16,17 @@ import environ
 import sentry_sdk
 
 env = environ.Env()
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
+
+# sentry_sdk.init(
+#     dsn="https://c1e4b46eb53e40acba4401ca46a9e171@o4504820571832320.ingest.sentry.io/4504820575830016",
+#     integrations=[
+#         DjangoIntegration(),
+#     ],
+#     traces_sample_rate=1.0,
+#    send_default_pii=True
+# )
 
 sentry_sdk.init(
     dsn=env("SENTRY_DSN"),
