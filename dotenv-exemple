@@ -1,0 +1,6 @@
+DEBUG=True
+ALLOWED_HOSTS=127.0.0.1,localhost
+SECRET_KEY=LQWUxRS9pYsbyZg07mmcaUXqIFa-d6tK9l1RUtlFeWS5OiURee3diBgzrieJ_ourYy5a0vMcwzwuNbFP0JNMSw
+DATABASE_URL=sqlite:///db.sqlite3
+DJANGO_SETTINGS_MODULE="config.settings"
+SENTRY_DSN=
