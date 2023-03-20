@@ -1,0 +1,25 @@
+upstream gunicorn_server {
+    server 127.0.0.1:8000 fail_timeout=0;
+}
+
+server {
+    server_name monadresseip;
+
+    location /static {
+        alias /home/recipes/recipe_blog/staticfiles;
+    }
+
+    location /media {
+        alias /home/recipes/recipe_blog/media;
+    }
+
+    location / {
+        try_files $uri @proxy_to_django;
+    }
+
+    location @proxy_to_django {
+        include proxy_params;
+        proxy_redirect off;
+        proxy_pass http://gunicorn_server;
+    }
+}
