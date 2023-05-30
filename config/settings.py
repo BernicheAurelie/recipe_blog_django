@@ -10,32 +10,13 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
-import os
 from pathlib import Path
 import environ
 import sentry_sdk
+import django_heroku
+import dj_database_url
 
 env = environ.Env()
-import sentry_sdk
-from sentry_sdk.integrations.django import DjangoIntegration
-
-# sentry_sdk.init(
-#     dsn="https://c1e4b46eb53e40acba4401ca46a9e171@o4504820571832320.ingest.sentry.io/4504820575830016",
-#     integrations=[
-#         DjangoIntegration(),
-#     ],
-#     traces_sample_rate=1.0,
-#    send_default_pii=True
-# )
-
-sentry_sdk.init(
-    dsn=env("SENTRY_DSN"),
-
-    # Set traces_sample_rate to 1.0 to capture 100%
-    # of transactions for performance monitoring.
-    # We recommend adjusting this value in production,
-    traces_sample_rate=1.0,
-)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -46,14 +27,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env("SECRET_KEY")
-# SECRET_KEY = "PDl7iBAgMigSAYN2wPe6kCcVofgm07kLKKO0knBorkC3_8g1PD2H-2LXAcYNNYi8GmLrhpelJkw4tSJZ1W1FaQ"
+# SECRET_KEY ="PDl7iBAgMigSAYN2wPe6kCcVofgm07kLKKO0knBorkC3_8g1PD2H-2LXAcYNNYi8GmLrhpelJkw4tSJZ1W1FaQ"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool('DEBUG')
+# DEBUG = False
 # DEBUG = True
 
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS")
-# ALLOWED_HOSTS = []
+# ALLOWED_HOSTS=["127.0.0.1", "localhost", "207.154.215.246"]
 
 # Application definition
 
@@ -72,6 +54,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -82,10 +65,12 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "config.urls"
 
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [os.path.join(BASE_DIR, 'templates')],
+        "DIRS": [BASE_DIR / 'templates'],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -104,10 +89,14 @@ WSGI_APPLICATION = "config.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+# DATABASES = {
+#     "default": env.db(
+#         default="sqlite:///db.sqlite3",
+#     )
+# }
+
 DATABASES = {
-    "default": env.db(
-        default="sqlite:///db.sqlite3",
-    )
+    "default" : dj_database_url.config()
 }
 
 # Password validation
@@ -145,8 +134,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+STATICFILES_DIRS = [BASE_DIR / 'static']
+MEDIA_ROOT = BASE_DIR / 'media'
 MEDIA_URL = '/media/'
 
 
@@ -154,3 +143,15 @@ MEDIA_URL = '/media/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+if not DEBUG:
+    sentry_sdk.init(
+        dsn=env("SENTRY_DSN"),
+
+        # Set traces_sample_rate to 1.0 to capture 100%
+        # of transactions for performance monitoring.
+        # We recommend adjusting this value in production,
+        traces_sample_rate=1.0,
+    )
+
+django_heroku.settings('locals')
