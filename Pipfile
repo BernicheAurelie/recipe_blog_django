@@ -5,16 +5,16 @@ name = "pypi"
 
 [packages]
 gunicorn = "*"
-asgiref = "==3.6.0"
-django = "==4.1.7"
-django-environ = "==0.9.0"
-pillow = "==9.4.0"
-psycopg2-binary = "==2.9.5"
-sqlparse = "==0.4.3"
-tzdata = "==2022.7"
-sentry-sdk = "*"
+django = "*"
+django-environ = "*"
+pillow = "*"
+psycopg2-binary = "*"
+sentry-sdk = {extras = ["django"], version = "*"}
+psycopg2 = "*"
+django-heroku = "*"
+dj-database-url = "*"
 
 [dev-packages]
 
 [requires]
-python_version = "3.9"
+python_version = "3.10"
