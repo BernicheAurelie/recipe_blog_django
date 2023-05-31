@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 import environ
-import sentry_sdk
+# import sentry_sdk
 import django_heroku
 import dj_database_url
 
@@ -145,14 +145,14 @@ MEDIA_URL = '/media/'
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-if not DEBUG:
-    sentry_sdk.init(
-        dsn=env("SENTRY_DSN"),
+# if not DEBUG:
+#     sentry_sdk.init(
+#         dsn=env("SENTRY_DSN"),
 
-        # Set traces_sample_rate to 1.0 to capture 100%
-        # of transactions for performance monitoring.
-        # We recommend adjusting this value in production,
-        traces_sample_rate=1.0,
-    )
+#         # Set traces_sample_rate to 1.0 to capture 100%
+#         # of transactions for performance monitoring.
+#         # We recommend adjusting this value in production,
+#         traces_sample_rate=1.0,
+#     )
 
 django_heroku.settings('locals')
