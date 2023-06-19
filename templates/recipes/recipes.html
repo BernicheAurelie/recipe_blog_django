@@ -51,26 +51,31 @@
                         {% endif %}
                         <div class="card card-body border-dark"> 
                             {%if not post.time_created == post.last_updated %}
-                                <i>publiée par {{post.user}} le {{post.time_created|date:"d M Y"}} (mise à jour le {{post.last_updated|date:"d M Y"}})</i>
+                                <i>publiée par {{post.user|capfirst}} le {{post.time_created|date:"d N Y"}} (mise à jour le {{post.last_updated|date:"d N Y"}})</i>
                             {% elif post.time_created == post.last_updated %}
-                                <i>publiée par {{post.user}} le {{post.time_created|date:"d M Y"}}</i>
+                                <i>publiée par {{post.user|capfirst}} le {{post.time_created|date:"d N Y"}}</i>
                             {%endif%}
                             <div class="p-3 mb-3 bd-highlight">
                                 <a class="p-2 rounded border border-dark" href="{% url 'create_comment' post.id%}">Commenter</a>
                             </div>
                         </div>
-                        {% for comment in comments %}
+                        {% comment %} <div>{{comments.0}}</div> {% endcomment %}
+                        {% for comment in comments|dictsortreversed:"last_updated" %}
                             {% if post.commented and comment.recipe.id == post.id%}
-                            <div class="card">
-                                <ul class="list-group list-group-flush">
-                                  <li class="list-group-item">
-                                    
-                                    <h6>{{comment.rating}}/5 &#9755; {{comment.title}}</h6>
-                                    <small>{{comment.description}}</small>
-                                  </li>
+                            
+                            <div class="container card card-body border-dark">
+                                <button class="afficher btn btn-light btn-link">{{comment.title}} &#9755; {{comment.rating}}/5</button>
+                                <div class="contenu">
+                                <ul>
+                                    <li class="list-group-item">
+                                        <p>{{comment.description}}</p><br>
+                                        <i class="d-flex justify-content-end"> &#40;{{comment.user|capfirst}}, il y a {{comment.last_updated|timesince}}&#41; </i>
+                                    </li>
+                                    <button class="fermer">fermer</button>  
                                 </ul>
-                              </div>
-                                
+                                </div>
+                                </div>
+                              
                             {% endif %}
                         {% endfor %}   
                     </div>
@@ -80,5 +85,22 @@
     </div>
 </div>
 </br>
+<aside>
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                      <h4>{{comment.title}} &#9755; {{comment.rating}}/5</h4>
+                      <p>{{comment.description}} </p><br>
+                      <small class="d-flex justify-content-end"> Commenté par {{comment.user|capfirst}} </small> 
+                      <small class="d-flex justify-content-end">le {{comment.time_created}}, mis à jour le {{comment.last_updated}}</small>
+                    </li>
+                  </ul>
+            </div>
+        </div>
+    </div>
+</aside>
 
 {% endblock %}

@@ -2,8 +2,10 @@ from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import CreerUtilisateur
+from django.views.decorators.csrf import csrf_protect
 
 
+@csrf_protect
 def inscriptionPage(request):
     form = CreerUtilisateur()
     if request.method == 'POST':
@@ -16,7 +18,7 @@ def inscriptionPage(request):
     context = {'form': form}
     return render(request, 'users/inscription.html', context)
 
-
+@csrf_protect
 def accesPage(request):
     context = {}
     if request.method == 'POST':

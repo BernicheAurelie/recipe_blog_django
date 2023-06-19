@@ -1,4 +1,5 @@
 from itertools import chain
+import datetime
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.db.models import CharField, Value, Q
@@ -10,6 +11,7 @@ from .models import Recipe
 
 def recipes_index(request):
     titre = "Bienvenue sur notre forum culinaire"
+    today = datetime.date.today()
     recipes = Recipe.objects.all()
     comments = Comment.objects.all()
     if request.method == "GET":
@@ -26,7 +28,7 @@ def recipes_index(request):
             key=lambda post: post.time_created,
             reverse=True
         )
-    context = {"titre": titre, 'posts': posts, 'comments': comments}
+    context = {"titre": titre, 'posts': posts, 'comments': comments, 'today': today}
     return render(request, 'recipes/recipes.html', context)
 
 @login_required(login_url='connexion')
