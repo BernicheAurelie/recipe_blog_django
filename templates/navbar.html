@@ -1,44 +1,107 @@
 
-<div class="d-flex bd-highlight bg-dark text-white">
-    {% if user.is_authenticated %}
-    <div class="me-auto p-3 bd-highlight">
-      Bonjour {{user.username|capfirst}}
-    </div>
-      <div class="p-2 bd-highlight">
-        <a class="nav-link" href="{%url 'recipes'%}">Les recettes</a>
-      </div>
-      <div class="p-2 bd-highlight">
-        <a class="nav-link" href="{%url 'create_recipe'%}">Publier une recette</a>
-      </div>
-      <div class="p-2 bd-highlight">
-        <a class="nav-link" href="{%url 'my_recipes'%}">Tes recettes publiées</a>
-      </div>
-      <div class="p-2 bd-highlight">
-        <a class="nav-link" href="{%url 'comments_index'%}">Tes commentaires</a>
-      </div>
-      <form class="d-flex me-auto" role="search">
-        <input class="form-control m-2 p-2 bd-highlight" name="recherche" type="search" placeholder="Rechercher" aria-label="Search">
-        <button class="btn btn-dark" type="submit">&#128269;</button>
-      </form>
-      <div class="p-2 bd-highlight"><a class="nav-link" href="/users/deconnexion/">Déconnexion</a></div>
-
-    {% else %}
-    <div class="me-auto p-3 bd-highlight">
-      Aurélie's Corner
-    </div>
-    <div class="me-auto p-2 bd-highlight">
-      <a class="nav-link" href="/users/inscription/">Inscription</a>
-    </div>
-    <div class="me-auto p-2 bd-highlight">
-      <a class="nav-link" href="/users/connexion/">Connexion</a>
-    </div>
-    <div class="me-auto p-2 bd-highlight">
-      <a class="nav-link" href="{%url 'recipes'%}">Les recettes</a>
-    </div>
-    <form class="d-flex" role="search">
-      <input class="form-control m-2 p-2 bd-highlight" name="recherche" type="search" placeholder="Rechercher" aria-label="Search">
-      <button class="btn btn-dark m-2" type="submit">&#128269;</button>
-    </form>
-    {% endif %}
-</div>
+  <!-- navbar-expand-md pour une navbar entière sur moyen et grands ecrans (fixed-top cf helpers in bootstrap doc) -->
   
+        {% if user.is_authenticated %}
+        <nav class="py-0 navbar navbar-dark navbar-expand-xl fixed-top bg-dark text-white shadow-sm bd-highlight">
+          <div class="container-fluid">
+        <div class="navbar-brand bd-highlight">
+          {% comment %} <a class="nav-link text-white" href="{%url 'password_change'%}">Bonjour {{user.username|capfirst}}</a> {% endcomment %}
+          <a class="nav-link text-white" href="{%url 'my_profile' user.id%}">Bonjour {{user.username|capfirst}}</a>
+
+          
+        </div>
+          <!-- classe: navbar-toggler
+              attribut: data-bs-toggle => cible l'élément div.collapse
+              attribut: data-bs-target => cible l'id navbarNav
+          -->
+          <button class="navbar-toggler"  type="button" data-bs-toggle="collapse"
+              data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+          </button>
+          <!-- justify-content-end reprend à la fois flex et justify-content: flex-end-->
+          <div class="collapse navbar-collapse justify-content-end bd-highlight" id="navbarNav">
+              <ul class="navbar-nav">
+                  <li class="nav-item active mx-1 pt-2 px-lg-0">
+                      <a class="nav-link text-white" href="{%url 'recipes'%}">Les recettes</a>
+                  </li>
+                  <li class="nav-item mx-1 pt-2 px-lg-0">
+                      <a class="nav-link text-white" href="{%url 'create_recipe'%}">Publier une recette</a>
+                  </li>
+                  <li class="nav-item mx-1 pt-2 px-lg-0">
+                      <a class="nav-link text-white" href="{%url 'my_recipes'%}">Tes recettes publiées</a>
+                  </li>
+                  <li class="nav-item mx-1 pt-2 px-lg-0">
+                      <a class="nav-link text-white" href="{%url 'my_comments'%}">Tes commentaires</a>
+                  </li>
+                  <li class="nav-item mx-1 pt-2 pt-lg-3 pt-xl-2 px-lg-0 pb-2 pb-md-0">
+                      <a class="nav-link text-white" href="/users/deconnexion/">Déconnexion</a>
+                  </li>
+                  <li class="nav-item mx-1 pt-lg-2 pt-xl-1">
+                    <form class="d-flex me-auto" role="search">
+                        <select class="form-control m-2 p-2 bd-highlight" aria-label="select categories" name="recherche">
+                          <option selected>Catégorie:</option>
+                          <option value="Apéritif">Apéritif</option>
+                          <option value="Plat">Plat</option>
+                          <option value="Accompagnement">Accompagnement</option>
+                          <option value="Dessert">Dessert</option>
+                          <option value="Sauce">Sauce</option>
+                          <option value="Autre">Autre</option>
+                        </select>
+                        <button class="loupe bg-transparent border-0" type="submit">&#128269;</button>
+                    </form>
+                </li>
+              </ul>
+          </div>
+          <form class="d-flex me-auto" role="search">
+            <input class="form-control m-2 p-2 bd-highlight" name="recherche" type="search" placeholder="Rechercher" aria-label="Search">
+            <button class="loupe bg-transparent border-0" type="submit">&#128269;</button>
+        </form>
+      </div>
+    </nav>
+  
+        {% else %}
+        <nav class="py-0 navbar navbar-dark navbar-expand-md fixed-top bg-dark text-white shadow-sm bd-highlight">
+          <div class="container-fluid">
+        <div class="navbar-brand bd-highlight">
+          Aurélie's Corner
+        </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+              data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+              <ul class="navbar-nav">
+                  <li class="nav-item active mx-1 pt-2">
+                      <a class="nav-link text-white" href="/users/inscription/">Inscription</a>
+                  </li>
+                  <li class="nav-item mx-1 pt-2">
+                      <a class="nav-link text-white" href="/users/connexion/">Connexion</a>
+                  </li>
+                  <li class="nav-item mx-1 pt-2">
+                      <a class="nav-link text-white" href="{%url 'recipes'%}">Les recettes</a>
+                  </li>
+                  <li class="nav-item mx-1">
+                    <form class="form-inline d-flex me-auto" role="search">
+                        <select class="form-control m-2 p-2 bd-highlight" aria-label="select categories" name="recherche">
+                          <option selected>Catégorie:</option>
+                          <option value="Apéritif">Apéritif</option>
+                          <option value="Plat">Plat</option>
+                          <option value="Accompagnement">Accompagnement</option>
+                          <option value="Dessert">Dessert</option>
+                          <option value="Sauce">Sauce</option>
+                          <option value="Autre">Autre</option>
+                        </select>
+                        <button class="loupe bg-transparent border-0" type="submit">&#128269;</button>
+                    </form>
+                </li>
+              </ul>
+          </div>
+          <form class="form-inline d-flex" role="search">
+            <input class="form-control m-2 p-2 bd-highlight" name="recherche" type="search" placeholder="recherche" aria-label="Search">
+            <button class="loupe bg-transparent border-0" type="submit">&#128269;</button>
+        </form>
+      </div>
+    </nav>
+  
+        {% endif %}
+

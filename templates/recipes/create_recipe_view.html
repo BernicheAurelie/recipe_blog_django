@@ -1,19 +1,11 @@
 {% extends 'main.html' %}
 {% load static %}
 {% block content %}
-<style>
-    .ombre {
-        box-shadow: #0040ff 0px 20px 30px, #0040ff 0px -12px 30px, #0040ff 0px 4px 6px, #0040ff 0px 12px 13px, #0040ff 0px -3px 5px;
-    }
-	#ingredients {
-		height : 150px;
-	}
-</style>
 
 <div class="d-flex justify-content-center mb-5">
 	<div class="col-md-7">
 		<div class="d-flex justify-content-center fs-2 p-4 mb-3">{{title}}</div>
-			<div class="ombre border border-dark rounded">
+			<div class="ombre border border-dark rounded bg-white">
 				<form action="" method="post" enctype="multipart/form-data">
 					{% csrf_token %} <!--protège les informations données-->
 						<!--{{form.as_p}}-->
@@ -34,7 +26,7 @@
 							{{form.recipe_tag}}
 						</div>
 							{{form.errors}}
-						<div class="d-flex justify-content-end">
+						<div class="bg-white d-flex justify-content-end p-1">
 							<button type="submit" class="rounded">Publier</button>
 						</div>
 					</div>

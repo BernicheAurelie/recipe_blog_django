@@ -1,0 +1,53 @@
+{% extends 'main.html' %}
+{% block content %}
+{% comment %} {% load static %} {% endcomment %}
+{% comment %} <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}"> {% endcomment %}
+
+<h5 class="d-flex justify-content-center m-3">{{title}}</h5>
+<div class="container">
+    <div class="row d-flex flex-column">
+        <div class="d-flex justify-content-center m-3">
+            {% for comment in comments %}
+            <div class="col-12 col-md-6 text-center mx-4">
+                <div class="mb-5 border border-dark rounded ">
+                    <div class="d-flex flex-column">
+                        <div class="card card-body border-dark">
+                            <h4>Commentaire concernant: {{comment.recipe}}</h4>
+                        </div>
+                        
+                        <div class="card card-body border-dark">
+                            <h6>Titre: {{comment.title}}</h6>
+                        </div>
+                        <div class="card card-body border-dark">
+                            <h6>Description: {{comment.description|linebreaksbr}}</h6>
+                        </div>
+                        <div class="card card-body border-dark">
+                            <h6>Note: {{comment.rating}}/5</h6>
+                        </div>
+                        <div class="card card-body border-dark"> 
+                            <div class="d-flex justify-content-end">
+                                <div class="p-2 mb-3 bd-highlight">
+                                    {%if not comment.time_created == comment.last_updated %}
+                                        <i>Publiée le {{comment.time_created|date:"d M Y"}} (mise à jour le {{comment.last_updated|date:"d M Y"}})</i>
+                                    {% elif comment.time_created == comment.last_updated %}
+                                        <i>Publiée le {{comment.time_created|date:"d M Y"}}</i>
+                                    {%endif%}
+                                </div>
+                                <div class="p-3 mb-3 bd-highlight">
+                                    <a class="p-2 rounded border border-dark" href="{% url 'modify_comment' comment.id%}">Modifier</a>
+                                </div>
+                                <div class="p-3 mb-3 me-3 bd-highlight">
+                                    <a class="p-2 rounded border border-dark" href="{% url 'delete_comment' comment.id%}">Supprimer</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+    
+
+{% endblock %}

@@ -1,5 +1,5 @@
 // Get the modal
-let modal = document.getElementById("myModal");
+// let modal = document.getElementById("myModal");
 // Get the button that opens the modal and 
 // When the user clicks the button, open modal
 // Fetch informations from api with id movie
@@ -19,16 +19,11 @@ let modal = document.getElementById("myModal");
 //   modal.style.display = "none";
 // }
 // When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-  if (event.target == modal) {
-    modal.style.display = "none";
-  }
-}
 
 
+let modal = document.getElementById("myModal");
 const entete = document.getElementsByClassName("afficher");
 const contenu = document.getElementsByClassName("contenu");
-console.log("entete chargée?");
 for (let i = 0; i < entete.length; i++) {
   entete[i].addEventListener("click", function (e){
     e.preventDefault();
@@ -39,5 +34,20 @@ for (let i = 0; i < entete.length; i++) {
   span[i].onclick = function() {
     contenu[i].style.display = "none";
   };
+  contenu[i].onclick = function() {
+    contenu[i].style.display = "none";
+  };
 };
+
+
+
+// window[i].onclick = function() {
+//   contenu[i].style.display = "none";
+// }
+// window.onclick = function(event) {
+//   if (event.target == modal) {
+//     modal.style.display = "none";
+//     contenu.style.display = "none";
+//   }
+// };
 

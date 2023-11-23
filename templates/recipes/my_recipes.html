@@ -1,26 +1,8 @@
 {% extends 'main.html' %}
 {% block content %}
 {% load static %}
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<style>
-    body {
-        background-color: #7abecc;
-    }
-    .ombre {
-        box-shadow: #0040ff 0px 10px 10px, #0040ff 0px -5px 5px, #0040ff 0px 4px 6px, #0040ff 0px 10px 10px, #0040ff 0px -3px 5px;
-    }
-</style>
-<div class="d-flex justify-content-center m-5">
-    <div class="d-flex justify-content-center m-5">
-        <img src="https://www.icone-gif.com/gif/maisons/cuisine/cuisine-gif-082.gif"
-        alt="chef cuisinier">
-    </div>
-    <h1 class="d-flex justify-content-center p-4 m-5"> Cook and Love </h1>
-    <div class="d-flex justify-content-center m-5">
-        <img src="https://www.icone-gif.com/gif/maisons/cuisine/cuisine-gif-076.gif"
-    alt="chef cuisinier">
-    </div>
-</div>
+{% load my_tags %}
+
 <div class="d-flex justify-content-center">
     <h3 class="d-flex justify-content-center p-2 m-2">{{titre}}</h3>    
 </div>
@@ -32,26 +14,29 @@
     <h3 id="message" class="d-flex justify-content-center p-2 m-2">{{message}}</h3>
 </div>
 {% endfor %}
-<div class="col-8 offset-2 mt-3">
-    <div class="d-flex justify-content-center mb-5">
-        <div class="col-md-7">
-            {% for recipe in recipes %}
-                <div class="w3-card-4 w3-margin w3-white">
+<div class="container">
+    <div class="row d-flex justify-content-around">
+        {% for recipe in recipes %}
+            <div class="col-11 col-md-5">
+                <div class="d-flex flex-column">
                     <div class="ombre d-flex flex-column">
-                        <div class="card card-body border-dark"> <h3>Titre:</h3>
-                            {{recipe.title}}
+                        <div class="card card-body border-dark">
+                            <span class="fs-4 fst-italic">Titre:</span>
+                            <h3>{{recipe.title}}</h3>
                         </div>
                         {% if recipe.ingredients == None %}
                             <div class="card card-body border-dark">
-                                <h5>Détail des ingrédients non précisé</h5>
+                                <p class="fs-5">Détail des ingrédients non précisé</p>
                             </div>
                         {% else %}
-                        <div class="card card-body border-dark"> <h3>Ingrédients:</h3>
-                            {{recipe.ingredients}}
+                        <div class="card card-body border-dark">
+                            <span class="fs-4 fst-italic">Ingrédients:</span>
+                             <p class="fs-5">{{recipe.ingredients|linebreaksbr|remove_excess_linebreaks}}</p>
                         </div>
                         {% endif %}
-                        <div class="card card-body border-dark"> <h3>Description:</h3>
-                            {{recipe.description}}
+                        <div class="card card-body border-dark"> 
+                            <span class="fs-4 fst-italic">Description:</span>
+                            <p class="fs-5">{{recipe.description|linebreaksbr|remove_excess_linebreaks}}</p>
                         </div>
                         {%if recipe.image %}
                             <div class="card card-body border-dark">
@@ -60,11 +45,12 @@
                         {% endif %}
                         {% if recipe.recipe_tag == None %}
                             <div class="card card-body border-dark">
-                                <h5>Catégorie non renseignée</h5>
+                                <p>Catégorie non renseignée</p>
                             </div>
                         {% else %}
                             <div class="card card-body border-dark">
-                                <h3>{{recipe.recipe_tag}}</h3>
+                                <span class="fs-4 fst-italic">Catégorie:</span>
+                                <p class="fs-5">{{recipe.recipe_tag}}</p>
                             </div>
                         {% endif %}
                         <div class="card card-body border-dark"> 
@@ -86,9 +72,9 @@
                         </div>    
                     </div>
                 </div>
-            </br>
-            {% endfor %}
-        </div>
+                </br>
+            </div>
+        {% endfor %}
     </div>
 </div>
 

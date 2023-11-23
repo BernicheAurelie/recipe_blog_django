@@ -1,0 +1,120 @@
+{% extends 'main.html' %}
+{% block content %}
+{% load static %}
+{% load my_tags %}
+
+<section class="container">
+    <div class="row">
+        <div class="col-12 col-md-7 mt-3">
+            <div class="d-flex justify-content-center mb-5">
+                {% comment %} <div class="col-md-7">
+                    <div class="w3-card-4 w3-margin w3-white"> {% endcomment %}
+                        <div class="ombre d-flex flex-column">
+                            <div class="card card-body border-dark">
+                                <span class="fs-4 fst-italic fw-bold">Titre:</span>
+                                <h3>{{recipe.title}}</h3>
+                            </div>
+                        {% if recipe.ingredients == None %}
+                            <div class="card card-body border-dark">
+                                <p class="fs-5">Détail des ingrédients non précisé</p>
+                            </div>
+                        {% else %}
+                            <div class="card card-body border-dark">
+                                <span class="fs-4 fst-italic fw-bold">Ingrédients:</span>
+                                    <p class="fs-5">{{recipe.ingredients|linebreaksbr|remove_excess_linebreaks}}</p>
+                            </div>
+                        {% endif %}
+                            <div class="card card-body border-dark"> 
+                                <span class="fs-4 fst-italic fw-bold">Description:</span>
+                                <p class="fs-5">{{recipe.description|linebreaksbr|remove_excess_linebreaks}}</p>
+                            </div>
+                        {%if recipe.image %}
+                            <div class="card card-body border-dark">
+                                <img src="{% get_media_prefix %}{{recipe.image}}" alt="image" class="img-thumbnail w-25">
+                            </div>
+                        {% else %}
+                            <div class="card card-body border-dark">
+                                <a class="p-2 rounded border border-dark" href="{% url 'modify_recipe' recipe.id%}">Ajouter une image</a>
+                            </div>
+                        {% endif %}
+                        {% if recipe.recipe_tag == None %}
+                            <div class="card card-body border-dark">
+                                <p>Catégorie non renseignée</p>
+                            </div>
+                        {% else %}
+                            <div class="card card-body border-dark">
+                                <span class="fs-4 fst-italic fw-bold">Catégorie:</span>
+                                <p class="fs-5">{{recipe.recipe_tag}}</p>
+                            </div>
+                        {% endif %}
+                            <div class="card card-body border-dark"> 
+                                <div class="row d-flex">
+                                    <div class="col-12 col-md-7 d-flex justify-content-end">
+                                        <div class="p-2 mb-3 bd-highlight">
+                                            {%if not recipe.time_created == recipe.last_updated %}
+                                                <i>Publiée le {{recipe.time_created|date:"d M Y"}} (mise à jour le {{recipe.last_updated|date:"d M Y"}})</i>
+                                            {% elif recipe.time_created == recipe.last_updated %}
+                                                <i>Publiée le {{recipe.time_created|date:"d M Y"}}</i>
+                                            {%endif%}
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-5 d-flex align-items-center justify-content-center">
+                                    {% if user.id == recipe.user.id %}
+                                        <div class="p-3 mb-3 bd-highlight">
+                                            <a class="p-2 rounded border border-dark" href="{% url 'modify_recipe' recipe.id%}">Modifier</a>
+                                        </div>
+                                        <div class="p-3 mb-3 me-3 bd-highlight">
+                                            <a class="p-2 rounded border border-dark" href="{% url 'delete_recipe' recipe.id%}">Supprimer</a>
+                                        </div>
+                                    {% elif user.is_authenticated %}
+                                        <div class="py-3 mt-3 bd-highlight">
+                                            <a class="p-2 rounded border border-dark" href="{% url 'recipes' %}">Retour aux recettes</a>
+                                        </div>
+                                    {% else %}
+                                        <div class="p-3 mb-3 bd-highlight">
+                                            <a class="p-2 rounded border border-dark" href="{% url 'connexion' %}">Connectez-vous pour commenter cette recette</a>
+                                        </div>
+                                    {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>    
+                    {% comment %} </div>
+                </div> {% endcomment %}
+                </br>
+            </div>
+        </div>
+        <div class="col-12 col-md-5 mt-3">
+            {%if recipe.commented %}
+                <div class="ombre d-flex flex-column">
+                    <div class="card card-body border-dark">
+                        <span class="fs-4 fst-italic fw-bold">Commentaires:</span>
+                    </div>
+                {% for comment in comments%}
+                    <div class="card card-body border-dark">
+                        <div class="">
+                            <span class="fs-6 fst-italic fw-bold">{{comment.title}} {{comment.rating}}/5</span>
+                        </div>
+                        {% if comment.description == None %}
+                            <div class="">
+                            </div>
+                        {% else %}
+                            <div class="">
+                                    <p class="fs-5">{{comment.description|linebreaksbr}}</p>
+                            </div>
+                            <div class="">
+                                <i class="d-flex justify-content-end"> &#40;{{comment.user|capfirst}}, il y a {{comment.last_updated|timesince|upto:',' }}&#41; </i>
+                            </div>
+                        {% endif %}
+                    </div>
+                {%endfor%}
+                </div>
+            {%else%}
+            <div class="card card-body border border-dark">
+                Il n'y a pas encore de commentaire associé à cette recette
+            </div>
+            {%endif%}
+        </div>
+    </div> 
+</section>
+{% endblock %}

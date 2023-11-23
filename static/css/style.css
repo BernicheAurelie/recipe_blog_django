@@ -2,13 +2,71 @@ body,html {
 	margin: 0;
 	padding: 0;
 	height: 100%;
-	background: #7abecc !important;
+	/* background: #7abecc !important; */
+	background-image: linear-gradient(120deg, rgb(31,220,237,0), rgb(31,220,237,1));
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.nav-item, .loupe {
+	transition: transform .2s;
+  }
+  .nav-item:hover {
+	transform: scale(1.2);
+  }
+  .loupe:hover {
+	transform: scale(3);
+  }
+.ombre {
+	box-shadow:#1fdced 0px 20px 30px,#1fdced 0px -12px 30px,#1fdced 0px 4px 6px,#1fdced 0px 12px 13px, #1fdced 0px -3px 5px;
+}
+#ingredients {
+	height : 150px;
+}
+.ingredients {
+	height : 100px;
+	overflow: auto;
+}
+.preparation {
+	height : 160px;
+	overflow: auto;
+}
+.no_comment{
+	height : 215px;
+}
+.no_more_comment{
+	height : 71px;
+}
+.no_image{
+	height : 120px;
+}
+ul#id_rating {
+	display: flex;
+}
+ul#id_rating li{
+	display: inline-block;
+	flex: 1;
+}
+#retour_en_haut{
+    position: fixed;
+    bottom: 0;
+    right: 5px;
+    font-size: 3rem;
+	color: #000;
+}
+#retour_en_haut_blanc{
+    position: fixed;
+    bottom: 0;
+    right: 5px;
+    font-size: 3rem;
+	color: white;
 }
 .user_card {
 	width: 350px;
 	margin-top: auto;
 	margin-bottom: auto;
-	background: #74cfbf;
+	background-image: linear-gradient(to right, rgba(27, 3, 112, 0), rgba(27,3,12,1));
 	position: relative;
 	display: flex;
 	justify-content: center;
@@ -43,7 +101,7 @@ body,html {
 	padding: 0 2rem;
 }
 .input-group-text {
-	background: #f7ba5b !important;
+	background: #33ccff !important;
 	color: white !important;
 	border: 0 !important;
 	border-radius: 0.25rem 0 0 0.25rem !important;
@@ -98,3 +156,11 @@ body,html {
 .container .contenu {
 	display: none;
 	}
+@media screen and (min-width: 480px) {
+	.loupe {
+		transition: transform .2s;
+	  }
+	  .loupe:hover {
+		transform: scale(1.1);
+	  }
+}

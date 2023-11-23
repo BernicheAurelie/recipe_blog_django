@@ -1,0 +1,24 @@
+{% extends 'main.html' %}
+{% block content %}
+<div class="container">
+    <div class="row d-flex justify-content-center mb-5 fw-bold">
+        <h2 class="col d-flex justify-content-center mx-3">
+           Tes informations ont bien été modifiées!
+        </h2>
+    </div>
+    <div class="row mx-3 d-flex justify-content-center ">
+        <div class="col-6 col-md-3 d-flex justify-content-center">
+            <p><a href="{% url 'recipes' %}">Retour aux recettes</a></p>
+        </div>
+        <div class="col-6 col-md-3 d-flex justify-content-center">
+            <p><a href="{% url 'create_recipe' %}">Publier une recette</a></p>
+        </div>
+        <div class="col-6 col-md-3 d-flex justify-content-center">
+            <p><a href="{% url 'my_recipes' %}">Tes recettes publiées</a></p>
+        </div>
+        <div class="col-6 col-md-3 d-flex justify-content-center">
+            <p><a href="{% url 'my_comments'%}">Tes commentaires</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

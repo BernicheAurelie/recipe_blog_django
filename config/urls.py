@@ -27,7 +27,6 @@ urlpatterns = [
     path('comments/', include('comments.urls')),
     path('users/', include('users.urls')),
     path('sentry-debug/', trigger_error),
-    # path('comments/', include('comments.urls')),
     # path('thought_of_the_day/', include('thought_of_the_day.urls')),
 ]
 if settings.DEBUG:

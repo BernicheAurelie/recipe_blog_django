@@ -12,9 +12,10 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 import environ
-# import sentry_sdk
-import django_heroku
-import dj_database_url
+import sentry_sdk
+from dotenv import load_dotenv
+
+load_dotenv()
 
 env = environ.Env()
 
@@ -26,17 +27,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = env("SECRET_KEY")
-SECRET_KEY ="PDl7iBAgMigSAYN2wPe6kCcVofgm07kLKKO0knBorkC3_8g1PD2H-2LXAcYNNYi8GmLrhpelJkw4tSJZ1W1FaQ"
+SECRET_KEY = env("SECRET_KEY", default="default_value")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = env.bool('DEBUG')
-DEBUG = False
-# DEBUG = True
+# DEBUG = env.bool('DEBUG', default=False)
+# DEBUG = False
+DEBUG = True
 
-# ALLOWED_HOSTS = env.list("ALLOWED_HOSTS")
-ALLOWED_HOSTS = ["https://aurelieblog.herokuapp.com/", "127.0.0.1", "localhost"]
-# ALLOWED_HOSTS=["127.0.0.1", "localhost", "207.154.215.246"]
+ALLOWED_HOSTS = env.list("ALLOWED_HOSTS")
+# ALLOWED_HOSTS = ["blogaurelie.herokuapp.com", "127.0.0.1", "localhost"]
+
+# CSRF_TRUSTED_ORIGINS = ["blogaurelie.herokuapp.com", "127.0.0.1", "localhost"]
+CSRF_TRUSTED_ORIGINS = ['https://*.herokuapp.com/']
 
 # Application definition
 
@@ -90,15 +92,30 @@ WSGI_APPLICATION = "config.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "RECIPE_BLOG_DB",
+        "USER": "recipe_blog_django",
+        "PASSWORD": env("DB_PASSWORD"),
+        "HOST": "localhost",
+        "PORT": "51706",
+    }
+}
+
 # DATABASES = {
 #     "default": env.db(
 #         default="sqlite:///db.sqlite3",
 #     )
 # }
 
-DATABASES = {
-    "default" : dj_database_url.config()
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -118,6 +135,17 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTH_USER_MODEL = "users.User"
+
+LOGIN_REDIRECT_URL = 'recipes'
+
+EMAIL_HOST = 'smtp.orange.fr'
+EMAIL_HOST_USER = 'berniche.aurelie@orange.fr'
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
@@ -154,5 +182,3 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 #         # We recommend adjusting this value in production,
 #         traces_sample_rate=1.0,
 #     )
-
-django_heroku.settings('locals')

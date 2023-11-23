@@ -1,12 +1,16 @@
 from django.db import models
 from django.conf import settings
+from django.contrib.auth import get_user_model
 
+
+def get_sentinel_user():
+    return get_user_model().objects.get_or_create(username='anonymous')[0]
 
 class Recipe(models.Model):
     title = models.CharField(max_length=128)
     ingredients = models.TextField(max_length=400, blank=True, null=True)
     description = models.TextField(max_length=2048, blank=True, null=True)
-    user = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.SET(get_sentinel_user))
     image = models.ImageField(upload_to='images/', null=True, blank=True)
     STARTER = 'Apéritif'
     MEAL = 'Plat'
@@ -16,7 +20,7 @@ class Recipe(models.Model):
     OTHER = 'Autre'
 
     CHOICES = [(STARTER, ('Apéritif')), (MEAL, ('Plat')), (TRIMMING, ('Accompagnement')), 
-            (PUDDING, ('Dessert')), (DIP, ('Sauce')), (OTHER,('autre'))
+            (PUDDING, ('Dessert')), (DIP, ('Sauce')), (OTHER,('Autre'))
             ]
     recipe_tag = models.CharField(max_length=25, choices=CHOICES, default=OTHER, blank=True, null=True)
     time_created = models.DateTimeField(auto_now_add=True)

@@ -2,34 +2,98 @@ from itertools import chain
 import datetime
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from django.db.models import CharField, Value, Q
+from django.db.models import CharField, Value, Q, Count
 from django.contrib import messages
 from comments.models import Comment
 from .forms import CreateRecipe
 from .models import Recipe
+from utils import format_datetime_fields
 
 
 def recipes_index(request):
     titre = "Bienvenue sur notre forum culinaire"
     today = datetime.date.today()
     recipes = Recipe.objects.all()
-    comments = Comment.objects.all()
+    recipes = Recipe.objects.annotate(num_comments=Count("comment"))
+    comments=[]
+    # if request:
     if request.method == "GET":
         name = request.GET.get("recherche")
         if name is not None:
-            recipes = Recipe.objects.filter(Q(title__icontains=name)| Q(ingredients__icontains=name)| Q(description__icontains=name)|Q(recipe_tag__icontains=name))
+            recipes = Recipe.objects.annotate(num_comments=Count("comment")).filter(
+                Q(title__icontains=name)|
+                Q(ingredients__icontains=name)|
+                Q(description__icontains=name)|
+                Q(recipe_tag__icontains=name)
+                )
             if not recipes:
                 message = "Il n'y a pas encore de recette correspondant à la recherche."
                 context = {"titre": titre,'message':message}
                 return render(request, 'recipes/recipes.html', context)
-    recipes = recipes.annotate(content_type=Value('RECIPE', CharField()))
-    # comments = comments.annotate(content_type=Value('COMMENT', CharField()))
+            else:
+                # get three first associated comments:
+                for recipe in recipes:
+                    associated_comments = Comment.objects.filter(recipe_id=recipe.id)
+                    comments.extend(associated_comments[:3])
+                    recipe.time_created.strftime('%d-%m-%Y')
+                    recipe.last_updated.strftime('%d-%m-%Y')
+                posts = sorted(recipes,
+                        key=lambda post: post.time_created,
+                        reverse=True
+                    )
+                comments = sorted(comments,
+                        key=lambda comment: comment.time_created,
+                        reverse=True
+                    )
+                context = {"titre": titre, 'posts': posts, 'comments': comments, 'today': today}
+                return render(request, 'recipes/recipes.html', context)
+    
+    # get three first associated comments:
+    for recipe in recipes:
+        associated_comments = Comment.objects.filter(recipe_id=recipe.id)
+        comments.extend(associated_comments[:3])
+        recipe.time_created.strftime('%d-%m-%Y')
+        recipe.last_updated.strftime('%d-%m-%Y')
     posts = sorted(recipes,
             key=lambda post: post.time_created,
             reverse=True
         )
+    comments = sorted(comments,
+            key=lambda comment: comment.time_created,
+            reverse=True
+        )
     context = {"titre": titre, 'posts': posts, 'comments': comments, 'today': today}
     return render(request, 'recipes/recipes.html', context)
+
+def detail_recipe_view(request, recipe_id=int):
+    recipe = Recipe.objects.get(id__exact=recipe_id)
+    recipe.time_created.strftime('%d-%m-%Y')
+    recipe.last_updated.strftime('%d-%m-%Y')
+    comments = Comment.objects.filter(recipe_id=recipe.id)
+    context = {'recipe': recipe, "comments":comments}
+    return render(request, 'recipes/detail_recipe.html', context)
+
+# def recipes_index(request):
+#     titre = "Bienvenue sur notre forum culinaire"
+#     today = datetime.date.today()
+#     recipes = Recipe.objects.all()
+#     comments = Comment.objects.all()
+#     if request.method == "GET":
+#         name = request.GET.get("recherche")
+#         if name is not None:
+#             recipes = Recipe.objects.filter(Q(title__icontains=name)| Q(ingredients__icontains=name)| Q(description__icontains=name)|Q(recipe_tag__icontains=name))
+#             if not recipes:
+#                 message = "Il n'y a pas encore de recette correspondant à la recherche."
+#                 context = {"titre": titre,'message':message}
+#                 return render(request, 'recipes/recipes.html', context)
+#     recipes = recipes.annotate(content_type=Value('RECIPE', CharField()))
+#     # comments = comments.annotate(content_type=Value('COMMENT', CharField()))
+#     posts = sorted(recipes,
+#             key=lambda post: post.time_created,
+#             reverse=True
+#         )
+#     context = {"titre": titre, 'posts': posts, 'comments': comments, 'today': today}
+#     return render(request, 'recipes/recipes.html', context)
 
 @login_required(login_url='connexion')
 def my_recipes(request):
