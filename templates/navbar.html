@@ -37,7 +37,7 @@
                       <a class="nav-link text-white" href="/users/deconnexion/">Déconnexion</a>
                   </li>
                   <li class="nav-item mx-1 pt-lg-2 pt-xl-1">
-                    <form class="d-flex me-auto" role="search">
+                    <form class="d-flex me-auto" role="search" action="{% url 'search_view' %}" method="get">
                         <select class="form-control m-2 p-2 bd-highlight" aria-label="select categories" name="recherche">
                           <option selected>Catégorie:</option>
                           <option value="Apéritif">Apéritif</option>
@@ -52,7 +52,7 @@
                 </li>
               </ul>
           </div>
-          <form class="d-flex me-auto" role="search">
+          <form class="d-flex me-auto" role="search" action="{% url 'search_view' %}" method="get">
             <input class="form-control m-2 p-2 bd-highlight" name="recherche" type="search" placeholder="Rechercher" aria-label="Search">
             <button class="loupe bg-transparent border-0" type="submit">&#128269;</button>
         </form>
@@ -81,7 +81,7 @@
                       <a class="nav-link text-white" href="{%url 'recipes'%}">Les recettes</a>
                   </li>
                   <li class="nav-item mx-1">
-                    <form class="form-inline d-flex me-auto" role="search">
+                    <form class="form-inline d-flex me-auto" role="search" action="{% url 'search_view' %}" method="get">
                         <select class="form-control m-2 p-2 bd-highlight" aria-label="select categories" name="recherche">
                           <option selected>Catégorie:</option>
                           <option value="Apéritif">Apéritif</option>
@@ -96,7 +96,7 @@
                 </li>
               </ul>
           </div>
-          <form class="form-inline d-flex" role="search">
+          <form class="form-inline d-flex" role="search" action="{% url 'search_view' %}" method="get">
             <input class="form-control m-2 p-2 bd-highlight" name="recherche" type="search" placeholder="recherche" aria-label="Search">
             <button class="loupe bg-transparent border-0" type="submit">&#128269;</button>
         </form>

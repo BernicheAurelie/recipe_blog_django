@@ -25,3 +25,10 @@ def remove_excess_linebreaks(text):
     text = re.sub('<br><br>','<br>', text)
     return text
 remove_excess_linebreaks.is_safe = True
+
+# @register.filter
+# @stringfilter
+# def remove_excess_linebreaks(text):
+#     text = re.sub(r'(<br>){2,}','<br>', text)
+#     return text
+# remove_excess_linebreaks.is_safe = True

@@ -7,8 +7,8 @@ def get_sentinel_user():
     return get_user_model().objects.get_or_create(username='anonymous')[0]
 
 class Recipe(models.Model):
-    title = models.CharField(max_length=128)
-    ingredients = models.TextField(max_length=400, blank=True, null=True)
+    title = models.CharField(max_length=70)
+    ingredients = models.TextField(max_length=500, blank=True, null=True)
     description = models.TextField(max_length=2048, blank=True, null=True)
     user = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.SET(get_sentinel_user))
     image = models.ImageField(upload_to='images/', null=True, blank=True)

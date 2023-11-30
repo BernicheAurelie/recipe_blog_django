@@ -30,7 +30,7 @@ for (let i = 0; i < entete.length; i++) {
     contenu[i].style.display = "block";
   });
   let span = document.getElementsByClassName("fermer");
-  span[i].style.float = 'right'
+  span[i].style.float = 'right';
   span[i].onclick = function() {
     contenu[i].style.display = "none";
   };
@@ -39,7 +39,26 @@ for (let i = 0; i < entete.length; i++) {
   };
 };
 
-
+let image_modal = document.getElementById("imageModal");
+const show_image_modal = document.getElementsByClassName("show_image_modal");
+const image = document.getElementsByClassName("image");
+for (let i = 0; i < show_image_modal.length; i++) {
+  console.log("click on show_image_modal ?");
+  console.log(i);
+  console.log(show_image_modal.length);
+  show_image_modal[i].addEventListener("click", function (e){
+    e.preventDefault();
+    image[i].style.display = "block";
+  });
+  let close_image = document.getElementsByClassName("close_image");
+  close_image[i].style.float = 'right'
+  close_image[i].onclick = function() {
+    image[i].style.display = "none";
+  };
+  image[i].onclick = function() {
+    image[i].style.display = "none";
+  };
+};
 
 // window[i].onclick = function() {
 //   contenu[i].style.display = "none";

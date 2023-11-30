@@ -2,12 +2,37 @@ body,html {
 	margin: 0;
 	padding: 0;
 	height: 100%;
-	/* background: #7abecc !important; */
+	width: 100%;
+  	position: relative;
 	background-image: linear-gradient(120deg, rgb(31,220,237,0), rgb(31,220,237,1));
     background-attachment: fixed;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+	 display: grid;
+	 grid-template-rows: auto 1fr auto;
+	 height: 100vh;
+ }
+
+ /* body,html {
+	margin: 0;
+	padding: 0;
+ } */
+.navbar-small-bottom{
+
+	max-height: 50px;
+	width: 100%;
+}
+
+.zoom {
+	transition: transform .2s;
+	box-shadow: inset 0 0 1em rgb(31,220,237);
+}
+.zoom:hover{
+	transform: scale(1.3);
+	z-index: 1;
+	box-shadow: inset 0 0 1em rgb(31,220,237),
+    0 0 2em rgb(31,220,237,0.7);
 }
 .nav-item, .loupe {
 	transition: transform .2s;
@@ -15,9 +40,21 @@ body,html {
   .nav-item:hover {
 	transform: scale(1.2);
   }
+
   .loupe:hover {
 	transform: scale(3);
   }
+a.scale {
+	text-decoration: none;
+	color: #000;
+	transition: transform .2s;
+}
+a.scale:hover {
+	transform: scale(1.2);
+  }
+a.heart-comment{
+	text-decoration: none;
+}
 .ombre {
 	box-shadow:#1fdced 0px 20px 30px,#1fdced 0px -12px 30px,#1fdced 0px 4px 6px,#1fdced 0px 12px 13px, #1fdced 0px -3px 5px;
 }
@@ -31,6 +68,13 @@ body,html {
 .preparation {
 	height : 160px;
 	overflow: auto;
+}
+.img-card {
+	height : 250px;
+
+}
+.comment {
+	min-height: 160px;
 }
 .no_comment{
 	height : 215px;
@@ -61,6 +105,9 @@ ul#id_rating li{
     right: 5px;
     font-size: 3rem;
 	color: white;
+}
+.button_width{
+	width:50%;
 }
 .user_card {
 	width: 350px;
@@ -153,8 +200,36 @@ ul#id_rating li{
     text-decoration: none;
     cursor: pointer;
 }
-.container .contenu {
+div.contenu {
 	display: none;
+	}
+/* .image{
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	align-items: center; 
+} */
+.image-modal {
+	display: none;
+	/* background-image: linear-gradient(120deg, rgb(31,220,237,0), rgb(31,220,237,1)); */
+	/* width: 100vw;
+	height: 100vh; */
+	/* background-color: #fff; */
+	z-index: 2;
+	/* height: 60%;
+	width: 60%; */
+  	position: fixed;
+	padding-top: 80px;
+	top: 2%;
+  	left: 2%;
+	bottom: 5%;
+	right: 5%;
+  	/* transform: translate(-50%, -50%); */
+  	/* left: 0;
+  	top: 0; */
+  	width: 80%;
+  	height: 80%;
+  	overflow: auto;
 	}
 @media screen and (min-width: 480px) {
 	.loupe {

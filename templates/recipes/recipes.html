@@ -3,146 +3,236 @@
 {% load static %}
 {% load my_tags %}
 
-{% comment %} <div class="d-flex justify-content-end m-5">
-<form class="d-flex" role="search">
-    <input class="form-control m-2 p-2 bd-highlight" name="recherche_par_catégorie" type="search" placeholder="Rechercher une catégorie" aria-label="Search">
-    <button class="btn btn-dark m-2" type="submit">Rechercher</button>
-</form>
-</div> {% endcomment %}
 
-
-<div class="col-8 offset-2 mt-3">
-{% for message in messages%}
-    <div class="d-flex justify-content-center">
-        <h3 id="message" class="d-flex justify-content-center p-2 m-2">{{message}}</h3>
-    </div>
-{% endfor %}
-</div>
-<div class="container">
-    <div class="row justify-content-around gy-4">
-    {% for post in posts %}
-    
-    <div class="col-11 col-md-5">
-              <div class="mb-5 h-100">
-                  <div class="d-flex flex-column">
-                      <div class="card card-body border-dark"> <h3 class="d-flex justify-content-center">{{post.title}}</h3>
-                          
-                      </div>
-                      {% if post.ingredients == None %}
-                          <div class="card card-body border-dark">
-                              <i>Détail des ingrédients non précisé</i>
-                          </div>
-                      {% else %}
-                      <div class="card card-body border-dark"> <h4 class="d-flex justify-content-center">Ingrédients:</h4>
-                         <p class="ingredients">{{post.ingredients|linebreaksbr|remove_excess_linebreaks}}</p>
-                      </div>
-                      {% endif %}
-                      <div class="card card-body border-dark"> <h4 class="d-flex justify-content-center">Préparation:</h4>
-                          <p class="preparation">{{post.description|linebreaksbr|remove_excess_linebreaks}}</p>
-                      </div>
-                      {%if post.image %}
-                          <div class="card card-body border-dark">
-                              <img src="{% get_media_prefix %}{{post.image}}" alt="image" class="img-thumbnail w-25 mx-auto d-block">
-                          </div>
-                        {% else %}
-                        <div class="card card-body border-dark no_image ">
-                            <p> Aucune image associée</p>
+<div class="container-fluid">
+    <div class="row d-flex flex-row justify-content-around gy-4">
+        {% for post in posts %}
+            <div class="col-12 col-md-6">
+                <div class="mb-5">
+                    <div class="d-flex flex-column">
+                        <div class="card card-body border-dark"> 
+                            {%if post.len_title > 20%}
+                                <h3 class="d-flex justify-content-center">
+                                    <a href="{% url 'detail_recipe' post.id %}" class="scale">
+                                        {{post.title|truncatechars:20}}
+                                    </a>
+                                </h3>
+                            {%else%}
+                                <h3 class="d-flex justify-content-center">
+                                    {{post.title|truncatechars:20}}
+                                </h3>
+                            {%endif%}
                         </div>
-                      {% endif %}
-                      {% if post.recipe_tag == None %}
-                          <div class="card card-body border-dark d-flex justify-content-center"><i>Catégorie non renseignée</i>
-                          </div>
-                      {% else %}
-                          <div class="card card-body border-dark ">
-                            <h4 class="d-flex justify-content-center">{{post.recipe_tag}}</h4>
-                            
-                          </div>
-                      {% endif %}
-                      <div class="card card-body border-dark d-flex justify-content-center"> 
-                          {%if not post.time_created|date:"d N Y" == post.last_updated|date:"d N Y" %}
-                              <i class="d-flex justify-content-center">
-                                publiée par {{post.user|capfirst}} le {{post.time_created|date:"d N Y"}} (mise à jour le {{post.last_updated|date:"d N Y"}})
-                            </i>
-                          {% comment %} {% elif post.time_created == post.last_updated %} {% endcomment %}
-                          {% else %}
-                            <i class="d-flex justify-content-center">publiée par {{post.user|capfirst}} le {{post.time_created|date:"d N Y"}}</i>
-                          {%endif%}
-                          <div class="p-3 bd-highlight d-flex justify-content-center">
-                              <a class="px-2 py-1 rounded border border-dark" href="{% url 'create_comment' post.id%}">Commenter</a>
-                          </div>
-                      </div>
-                      {% if post.commented %}
-                            {%if post.num_comments >= 3 %}
-                                {% for comment in comments%}
-                                    {% if comment.recipe.id == post.id%}
-                                        <div class="container card card-body border-dark">
-                                            <button class="afficher btn btn-light btn-link">{{comment.title}} &#9755; {{comment.rating}}/5</button>
-                                            <div class="contenu">
-                                                <ul>
-                                                    <li class="list-group-item">
-                                                        <p class="">{{comment.description}}</p><br>
-                                                        <i class="d-flex justify-content-end"> &#40;{{comment.user|capfirst}}, il y a {{comment.last_updated|timesince|upto:',' }}&#41; </i>
-                                                    </li>
-                                                    <button class="fermer">fermer</button>  
-                                                </ul>
-                                            </div>
+                        <div class="card card-body border-dark">
+                            {% if post.ingredients == None %}
+                                    <i>Détail des ingrédients non précisé</i>
+                            {% else %}
+                                <h4 class="d-flex justify-content-center">Ingrédients:</h4>
+                                <p class="ingredients">{{post.ingredients|linebreaksbr|remove_excess_linebreaks}}</p>
+                            {% endif %}
+                        </div>    
+                        <div class="card card-body border-dark"> 
+                            <h4 class="d-flex justify-content-center">Préparation:</h4>
+                            <p class="preparation">{{post.description|linebreaksbr|remove_excess_linebreaks}}</p>
+                        </div>
+                        <div class="card card-body border-dark"> 
+                            {%if post.image %}
+                                <div class="show_image_modal img-card d-flex justify-content-center">
+                                    <img src="{% get_media_prefix %}{{post.image}}" alt="image" class="img-thumbnail w-50 mx-auto d-block zoom">
+                                </div>
+                                <div class="image modal">
+                                    <div class="container pt-5 modal-body">
+                                        <div class="row py-3 d-flex justify-content-center bg-white fs-4">
+                                            {{post.title|truncatechars:20}}
                                         </div>
-                                    {%endif%}
-                                {%endfor%}    
-                            {%elif post.num_comments == 2 %}
-                                {% for comment in comments%}
-                                    {% if comment.recipe.id == post.id%}
-                                        <div class="container card card-body border-dark">
-                                            <button class="afficher btn btn-light btn-link">{{comment.title}} &#9755; {{comment.rating}}/5</button>
-                                            <div class="contenu">
-                                                <ul>
-                                                    <li class="list-group-item">
-                                                        <p class="">{{comment.description}}</p><br>
-                                                        <i class="d-flex justify-content-end"> &#40;{{comment.user|capfirst}}, il y a {{comment.last_updated|timesince|upto:',' }}&#41; </i>
-                                                    </li>
-                                                    <button class="fermer">fermer</button>  
-                                                </ul>
-                                            </div>
+                                        <div class="row bg-white">
+                                            <img src="{% get_media_prefix %}{{post.image}}" alt="image" class="shadow w-50 m-auto d-block">
                                         </div>
-                                    {%endif%}
-                                {%endfor%}
-                                <div class="container card card-body border-dark border-left border-right no_more_comment">
-                                    <p class="d-flex justify-content-start">Pas d'autre commentaire</p>
+                                        <div class="row bg-white">
+                                            <button class="close_image border border-0 bg-white text-end fs-5">X</button>
+                                        </div>
+                                    </div>
                                 </div>
                             {% else %}
-                                {% for comment in comments%}
-                                    {% if comment.recipe.id == post.id%}
-                                        <div class="container card card-body border-dark">
-                                            <button class="afficher btn btn-light btn-link">{{comment.title}} &#9755; {{comment.rating}}/5</button>
+                                <p class="no_image "> Aucune image associée</p>
+                            {% endif %}
+                        </div>
+                        <div class="card card-body border-dark d-flex justify-content-center">
+                            {% if post.recipe_tag %}
+                                <h4 class="d-flex justify-content-center">{{post.recipe_tag}}</h4>
+                            {% else %}
+                                <i>Catégorie non renseignée</i>
+                            {% endif %}
+                        </div>
+                        <div class="card card-body border-dark d-flex justify-content-center"> 
+                            {% if user.id == post.user.id %}
+                                <div class="row">
+                                    <div class="p-3 bd-highlight d-flex justify-content-center">
+                                        <a class="px-2 py-1 rounded border border-dark" href="{% url 'create_comment' post.id%}">Commenter</a>
+                                    </div>
+                                </div>
+                                <div class="row d-flex flex-row justify-content-between">
+                                    <div class="col-5 mx-2 bd-highlight d-flex justify-content-center">
+                                        <a class="px-2 py-1 rounded border border-dark" href="{% url 'modify_recipe' post.id%}">Modifier</a>
+                                    </div>
+                                    <div class="col-5 d-flex justify-content-center bd-highlight">
+                                        <a class="px-2 py-1 rounded border border-dark" href="{% url 'delete_recipe' post.id%}">Supprimer</a>
+                                    </div>   
+                                </div>
+                            {%else%}
+                            <div class="">
+                                <h5 class="d-flex justify-content-center fst-italic">
+                                    Publiée par {{post.user|capfirst}} le {{post.last_updated|date:"d N Y"}}
+                                </h5>
+                                <div class="p-3 bd-highlight d-flex justify-content-center">
+                                    <a class="px-2 py-1 rounded border border-dark" href="{% url 'create_comment' post.id%}">Commenter</a>
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="card card-body border-dark">
+                            {% if post.commented %}
+                                {%if post.num_comments >= 3 %}
+                                    {% for comment in comments%}
+                                        {% if comment.recipe.id == post.id%}
+                                            <button class="afficher btn btn-light btn-link">
+                                                {{comment.title|truncatechars:20}} &#9755; {{comment.rating}}/5
+                                            </button>
                                             <div class="contenu">
                                                 <ul>
                                                     <li class="list-group-item">
-                                                        <p class="">{{comment.description}}</p><br>
+                                                        <p class="ingredients">{{comment.description|linebreaksbr|remove_excess_linebreaks|linebreaksbr|remove_excess_linebreaks}}</p><br>
                                                         <i class="d-flex justify-content-end"> &#40;{{comment.user|capfirst}}, il y a {{comment.last_updated|timesince|upto:',' }}&#41; </i>
                                                     </li>
                                                     <button class="fermer">fermer</button>  
                                                 </ul>
                                             </div>
-                                        </div>
-                                    {%endif%}
-                                {%endfor%}
-                                <div class="container card card-body border-dark border-bottom-0 no_more_comment">
-                                    <p class="d-flex justify-content-start">Pas d'autre commentaire</p>
-                                </div>
-                                <div class="container card card-body border-dark border-top-0 no_more_comment">
-                                    <p class="d-flex justify-content-center"></p>
-                                </div>
-                            {% endif %} 
-                      {% else %}
-                        <div class="container card card-body border-dark no_comment">
-                           <p class="">Aucun commentaire associé</p>
+                                        {%endif%}
+                                    {%endfor%}
+                                {%elif post.num_comments == 2 %}
+                                    {% for comment in comments%}
+                                        {% if comment.recipe.id == post.id%}
+                                            <button class="afficher btn btn-light btn-link">{{comment.title|truncatechars:20|truncatechars:20}} &#9755; {{comment.rating}}/5</button>
+                                            <div class="contenu">
+                                                <ul>
+                                                    <li class="list-group-item">
+                                                        <p class="">{{comment.description|linebreaksbr|remove_excess_linebreaks}}</p><br>
+                                                        <i class="d-flex justify-content-end"> &#40;{{comment.user|capfirst}}, il y a {{comment.last_updated|timesince|upto:',' }}&#41; </i>
+                                                    </li>
+                                                    <button class="fermer">fermer</button>  
+                                                </ul>
+                                            </div>
+                                        {%endif%}
+                                    {%endfor%}
+                                    <button class="btn btn-light disabled d-flex justify-content-center">Pas d'autre commentaire</button>
+                                {% else %}
+                                    {% for comment in comments%}
+                                        {% if comment.recipe.id == post.id%}
+                                            <button class="afficher btn btn-light btn-link">{{comment.title|truncatechars:20}} &#9755; {{comment.rating}}/5</button>
+                                            <div class="contenu">
+                                                <ul>
+                                                    <li class="list-group-item">
+                                                        <p class="">{{comment.description|linebreaksbr|remove_excess_linebreaks}}</p><br>
+                                                        <i class="d-flex justify-content-end"> &#40;{{comment.user|capfirst}}, il y a {{comment.last_updated|timesince|upto:',' }}&#41; </i>
+                                                    </li>
+                                                    <button class="fermer">fermer</button>  
+                                                </ul>
+                                            </div>
+                                        {%endif%}
+                                    {%endfor%}
+                                    <button class="btn btn-light disabled d-flex justify-content-center">Pas d'autre commentaire</button>
+                                    <button class="btn btn-light disabled d-flex justify-content-center">        </button>
+                                {% endif %}
+                            {%else%}
+                                <button class="btn btn-light disabled d-flex justify-content-center">N'hésitez pas</button>
+                                <button class="btn btn-light disabled d-flex justify-content-center">à commenter</button>
+                                <button class="btn btn-light disabled d-flex justify-content-center">cette recette</button> 
+                            {% endif %}
                         </div>
-                      {% endif %}
-                        <div class="container card card-body border-dark d-flex flex-row justify-content-between">
-                            <div class="bd-highlight">
-                                <p class="">
-                                    {{post.num_comments}} commentaires
-                                </p>           
+                        <div class="card card-body border-dark d-flex flex-row justify-content-between">
+                            <div class="bd-highlight pt-1">
+                                <a href="{%url 'create_comment' post.id%}" class="heart-comment">
+                                    <span>
+                                        {% if post.avg_rating < 0.5 %}
+                                            <i class="bi bi-heart"></i>
+                                            <i class="bi bi-heart"></i>
+                                            <i class="bi bi-heart"></i>
+                                            <i class="bi bi-heart"></i>
+                                            <i class="bi bi-heart"></i>
+                                        {% elif post.avg_rating >= 0.5 and post.avg_rating < 1 %}
+                                            <i class="bi bi-heart-half"></i>
+                                            <i class="bi bi-heart"></i>
+                                            <i class="bi bi-heart"></i>
+                                            <i class="bi bi-heart"></i>
+                                            <i class="bi bi-heart"></i>
+                                        {% elif post.avg_rating >= 1 and post.avg_rating < 1.5 %}
+                                            <i class="bi bi-heart-fill"></i>
+                                            <i class="bi bi-heart"></i>
+                                            <i class="bi bi-heart"></i>
+                                            <i class="bi bi-heart"></i>
+                                            <i class="bi bi-heart"></i>
+                                        {% elif post.avg_rating >= 1.5 and post.avg_rating < 2 %}
+                                            <i class="bi bi-heart-fill"></i>
+                                            <i class="bi bi-heart-half"></i>
+                                            <i class="bi bi-heart"></i>
+                                            <i class="bi bi-heart"></i>
+                                            <i class="bi bi-heart"></i>
+                                        {% elif post.avg_rating >= 2 and post.avg_rating < 2.5 %}
+                                            <i class="bi bi-heart-fill"></i>
+                                            <i class="bi bi-heart-fill"></i>
+                                            <i class="bi bi-heart"></i>
+                                            <i class="bi bi-heart"></i>
+                                            <i class="bi bi-heart"></i>
+                                        {% elif post.avg_rating >= 2.5 and post.avg_rating < 3 %}
+                                            <i class="bi bi-heart-fill"></i>
+                                            <i class="bi bi-heart-fill"></i>
+                                            <i class="bi bi-heart-half"></i>
+                                            <i class="bi bi-heart"></i>
+                                            <i class="bi bi-heart"></i>
+                                        {% elif post.avg_rating >= 3 and post.avg_rating < 3.5 %}
+                                            <i class="bi bi-heart-fill"></i>
+                                            <i class="bi bi-heart-fill"></i>
+                                            <i class="bi bi-heart-fill"></i>
+                                            <i class="bi bi-heart"></i>
+                                            <i class="bi bi-heart"></i>
+                                        {% elif post.avg_rating >= 3.5 and post.avg_rating < 4 %}
+                                            <i class="bi bi-heart-fill"></i>
+                                            <i class="bi bi-heart-fill"></i>
+                                            <i class="bi bi-heart-fill"></i>
+                                            <i class="bi bi-heart-half"></i>
+                                            <i class="bi bi-heart"></i>
+                                        {% elif post.avg_rating >= 4 and post.avg_rating < 4.5 %}
+                                            <i class="bi bi-heart-fill"></i>
+                                            <i class="bi bi-heart-fill"></i>
+                                            <i class="bi bi-heart-fill"></i>
+                                            <i class="bi bi-heart-fill"></i>
+                                            <i class="bi bi-heart"></i>
+                                        {% elif post.avg_rating >= 4.5 and post.avg_rating < 5 %}
+                                            <i class="bi bi-heart-fill"></i>
+                                            <i class="bi bi-heart-fill"></i>
+                                            <i class="bi bi-heart-fill"></i>
+                                            <i class="bi bi-heart-half"></i>
+                                            <i class="bi bi-heart"></i>
+                                        {% elif post.avg_rating == 5 %}
+                                            <i class="bi bi-heart-fill"></i>
+                                            <i class="bi bi-heart-fill"></i>
+                                            <i class="bi bi-heart-fill"></i>
+                                            <i class="bi bi-heart-fill"></i>
+                                            <i class="bi bi-heart-fill"></i>
+                                        {%endif%}
+                                    </span>
+                                </a>
+                                    <span>
+                                        {% if post.num_comments >= 1 %}
+                                            <a class="" href="{%url 'associated_comments' post.id%}">
+                                                <strong>({{post.num_comments}} com)</strong>
+                                            </a>
+                                        {% else %}
+                                            <a class="" href="{%url 'create_comment' post.id%}">
+                                                <strong>({{post.num_comments}} com)</strong>
+                                            </a>
+                                        {% endif %}
+                                    </span>
                             </div>
                             <div class="bd-highlight my-1">
                                 <a class="px-2 py-1 rounded border border-dark" href="{%url 'detail_recipe' post.id%}">
@@ -150,17 +240,12 @@
                                 </a>           
                             </div>
                         </div>
-                  </div>
-              </div>
-              </div>
-              
-          {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
     </div>
-  </div>
-
-    
-
-</br>
+</div>
 <aside>
     <div id="myModal" class="modal">
         <div class="modal-content">
@@ -168,15 +253,14 @@
             <div>
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item">
-                      <h4>{{comment.title}} &#9755; {{comment.rating}}/5</h4>
-                      <p>{{comment.description}} </p><br>
-                      <small class="d-flex justify-content-end"> Commenté par {{comment.user|capfirst}} </small> 
-                      <small class="d-flex justify-content-end">le {{comment.time_created}}, mis à jour le {{comment.last_updated}}</small>
+                        <h4>{{comment.title}} &#9755; {{comment.rating}}/5</h4>
+                        <p>{{comment.description}} </p><br>
+                        <small class="d-flex justify-content-end"> Commenté par {{comment.user|capfirst}} </small> 
+                        <small class="d-flex justify-content-end">le {{comment.time_created}}, mis à jour le {{comment.last_updated}}</small>
                     </li>
-                  </ul>
+                </ul>
             </div>
         </div>
     </div>
 </aside>
-
 {% endblock %}

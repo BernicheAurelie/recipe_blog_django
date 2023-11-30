@@ -1,29 +1,25 @@
 {% extends 'main.html' %}
 {% block content %}
-{% comment %} {% load static %} {% endcomment %}
-{% comment %} <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}"> {% endcomment %}
 
 
 <div class="container-fluid">
-    <h3 class="d-flex justify-content-center mb-5">{{title}}</h3>
+    <h2 class="d-flex justify-content-center mb-5">{{title}}</h2>
+    <h2 class="d-flex justify-content-center mb-5">{{note_moyenne}}</h2>
     <div class="row d-flex flex-row justify-content-around gy-4">
-        {% comment %} <div class="d-flex justify-content-center m-3">     {% endcomment %}
-            {% for comment in comments %}
+        {% for comment in comments %}
             <div class="col-12 col-md-6 text-center">
                 <div class="mb-5 border border-dark rounded ">
                     <div class="d-flex flex-column">
                         <div class="card card-body border-dark">
-                            <h4>Commentaire concernant: {{comment.recipe}}</h4>
-                        </div>
-                        
-                        <div class="card card-body border-dark">
-                            <h6>Titre: {{comment.title}}</h6>
+                            <h4 class="text-decoration-underline">Titre:</h4>
+                            <h4>{{comment.title}}</h4>
                         </div>
                         <div class="card card-body border-dark">
-                            <h6>Description: {{comment.description|linebreaksbr}}</h6>
+                            <h4 class="text-decoration-underline">Description:</h4>
+                            <p class="fs-4">Description: {{comment.description|linebreaksbr}}</p>
                         </div>
                         <div class="card card-body border-dark">
-                            <h6>Note: {{comment.rating}}/5</h6>
+                            <h4>Note: {{comment.rating}}/5</h4>
                         </div>
                         <div class="card card-body border-dark"> 
                             <div class="d-flex justify-content-end">
@@ -58,9 +54,6 @@
                                             {%endif%}
                                             <i>Par {{comment.user|capfirst}}</i>
                                         </div>
-                                        <div class="col-12">
-                                            <a class="p-2 rounded border border-dark" href="{% url 'create_comment' comment.id%}">Modifier</a>
-                                        </div>
                                     </div>
                                 {% endif %}
                             </div>
@@ -70,6 +63,9 @@
             </div>
             {% endfor %}
         {% comment %} </div> {% endcomment %}
+    </div>
+    <div class="d-flex justify-content-center mb-5">
+        <a class="p-2 px-5 bg-white rounded border border-dark d-flex justify-content-center" href="{% url 'create_comment' recipe.id%}">Commenter la recette</a>
     </div>
 </div>
 {% endblock %}

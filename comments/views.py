@@ -14,6 +14,23 @@ def my_comments(request):
     return render(request,"comments/my_comments.html", context)
 
 @login_required(login_url='connexion')
+def associated_comments(request, recipe_id):
+    recipe = Recipe.objects.get(id=recipe_id)
+    title = f'Commentaires associés à la recette: "{recipe.title}"' 
+    comments = Comment.objects.filter(recipe_id=recipe_id)
+    total_comments=len(comments)
+    rating = 0
+    try:
+        for comment in comments:
+            rating += comment.rating
+        avg_rating = rating/total_comments
+    except ZeroDivisionError:
+        avg_rating = 0
+    note_moyenne = f'Note moyenne: {avg_rating}/5'
+    context = {"title": title, "comments": comments, "avg_rating":avg_rating, 'note_moyenne':note_moyenne, "recipe":recipe}
+    return render(request,"comments/associated_comments.html", context)
+
+@login_required(login_url='connexion')
 def createComment(request, recipe_id=None):
     recipe = Recipe.objects.get(id__exact=recipe_id)
     title = str(recipe.title)
@@ -33,14 +50,26 @@ def createComment(request, recipe_id=None):
     context = {'form': form, "title":title, "recipe":recipe}
     return render(request, "comments/create_comments.html", context)
 
+@login_required(login_url='connexion')
 def deleteComment(request, comment_id=int):
-    if request.method == 'GET':
-        comment = Comment.objects.get(id=comment_id)
+    comment = Comment.objects.get(id=comment_id)
+    context = {"comment":comment}
+    if request.method == 'POST':
         comment.delete()
         messages.success(request, "Ton commentaire a bien été supprimé")
         return redirect("my_comments")
-    return render("comments/my_comments.html")    
+    return render(request, "comments/delete_comment.html", context) 
 
+# @login_required(login_url='connexion')
+# def deleteComment(request, comment_id=int):
+#     if request.method == 'GET':
+#         comment = Comment.objects.get(id=comment_id)
+#         comment.delete()
+#         messages.success(request, "Ton commentaire a bien été supprimé")
+#         return redirect("my_comments")
+#     return render("comments/my_comments.html")    
+
+@login_required(login_url='connexion')
 def modifyComment(request, comment_id=int):
     context={}
     comment = Comment.objects.get(id=comment_id)
