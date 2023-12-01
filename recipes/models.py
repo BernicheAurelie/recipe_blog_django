@@ -1,5 +1,6 @@
 from django.db import models
-from django.conf import settings
+# from django.conf import settings
+from config import settings
 from django.contrib.auth import get_user_model
 
 
@@ -9,7 +10,7 @@ def get_sentinel_user():
 class Recipe(models.Model):
     title = models.CharField(max_length=70)
     ingredients = models.TextField(max_length=500, blank=True, null=True)
-    description = models.TextField(max_length=2048, blank=True, null=True)
+    description = models.TextField(max_length=2048)
     user = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.SET(get_sentinel_user))
     image = models.ImageField(upload_to='images/', null=True, blank=True)
     STARTER = 'Apéritif'

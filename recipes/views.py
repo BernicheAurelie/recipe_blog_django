@@ -1,6 +1,7 @@
 from itertools import chain
 import datetime
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404
 from django.shortcuts import render, redirect
 from django.db.models import CharField, Value, Q, Count, Avg, Min, Max
 from django.db.models.functions import Length
@@ -66,7 +67,6 @@ def recipes_index(request):
             ).annotate(
                 len_title=Length("title")
                 )      
-    print("vars post annotate recipes[0]: ", vars(recipes[0]))
     comments=[]
     # get three first associated comments:
     for recipe in recipes:
@@ -86,7 +86,7 @@ def recipes_index(request):
     return render(request, 'recipes/recipes.html', context)
 
 def detail_recipe_view(request, recipe_id=int):
-    recipe = Recipe.objects.get(id__exact=recipe_id)
+    recipe = get_object_or_404(Recipe, id=recipe_id)
     recipe.time_created.strftime('%d-%m-%Y')
     recipe.last_updated.strftime('%d-%m-%Y')
     comments = Comment.objects.filter(recipe_id=recipe.id)
@@ -98,7 +98,11 @@ def detail_recipe_view(request, recipe_id=int):
         avg_rating = rating/total_comments
     except ZeroDivisionError:
         avg_rating = 0
-    context = {'recipe': recipe, "comments":comments, "avg_rating":avg_rating}
+    if total_comments>0:
+        title=f'Note moyenne: {avg_rating}/5'
+    else:
+        title="Cette recette n'est pas encore notée"
+    context = {'recipe': recipe, "comments":comments, "avg_rating":avg_rating, "title":title}
     return render(request, 'recipes/detail_recipe.html', context)
 
 @login_required(login_url='connexion')
@@ -149,26 +153,32 @@ def createRecipe(request):
 @login_required(login_url='connexion')
 def modifyRecipe(request, recipe_id=int):
     context={}
-    recipe = Recipe.objects.get(id__exact=recipe_id)
-    if request.method == 'GET':
-        form = CreateRecipe(instance=recipe)
-        context = {'form': form}
-    if request.method == 'POST':
-        form = CreateRecipe(request.POST, request.FILES)
-        if form.is_valid():
-            recipe.title = form.cleaned_data['title']
-            recipe.ingredients = form.cleaned_data['ingredients']
-            recipe.description = form.cleaned_data['description']
-            if form.cleaned_data['image'] is False:
-                recipe.image = None
-            elif form.cleaned_data['image'] is not None:
-                recipe.image = form.cleaned_data['image']
-            if form.cleaned_data['recipe_tag'] is False:
-                recipe.recipe_tag = None
-            elif form.cleaned_data['recipe_tag'] is not None:
-                recipe.recipe_tag = form.cleaned_data['recipe_tag']
-            recipe.save()
-            messages.success(request, 'ta recette "' + recipe.title +'" a bien été modifiée')
+    recipe = get_object_or_404(Recipe, id=recipe_id)
+    print("request.user.id == ", request.user.id)
+    print("recipe.user.id == ", recipe.user.id)
+    if request.user.id == recipe.user.id:
+        if request.method == 'GET':
+            form = CreateRecipe(instance=recipe)
+            context = {'form': form}
+        if request.method == 'POST':
+            form = CreateRecipe(request.POST, request.FILES)
+            if form.is_valid():
+                recipe.title = form.cleaned_data['title']
+                recipe.ingredients = form.cleaned_data['ingredients']
+                recipe.description = form.cleaned_data['description']
+                if form.cleaned_data['image'] is False:
+                    recipe.image = None
+                elif form.cleaned_data['image'] is not None:
+                    recipe.image = form.cleaned_data['image']
+                if form.cleaned_data['recipe_tag'] is False:
+                    recipe.recipe_tag = None
+                elif form.cleaned_data['recipe_tag'] is not None:
+                    recipe.recipe_tag = form.cleaned_data['recipe_tag']
+                recipe.save()
+                messages.success(request, 'Ta recette "' + recipe.title +'" a bien été modifiée')
+            return redirect('recipes')
+    else:
+        messages.error(request, 'Cette recette ne peut être modifiée que par son auteur')
         return redirect('recipes')
     return render(request, 'recipes/create_recipe_view.html', context)
 
@@ -184,11 +194,16 @@ def modifyRecipe(request, recipe_id=int):
 
 @login_required(login_url='connexion')
 def deleteRecipe(request, recipe_id=int):
-    recipe = Recipe.objects.get(id__exact=recipe_id)
+    recipe = get_object_or_404(Recipe, id=recipe_id)
     context = {"recipe": recipe}
-    if request.method == 'POST':
-        recipe.delete()
-        messages.success(request, 'Ta recette a bien été supprimée')
+    print("request.user.id == ", request.user.id)
+    print("recipe.user.id == ", recipe.user.id)
+    if request.user.id == recipe.user.id:
+        if request.method == 'POST':
+            recipe.delete()
+            messages.success(request, 'Ta recette a bien été supprimée')
+            return redirect('recipes')
+    else:
+        messages.error(request, 'Cette recette ne peut être supprimée que par son auteur')
         return redirect('recipes')
-    
     return render(request, 'recipes/delete_recipe.html', context)

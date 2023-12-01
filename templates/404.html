@@ -1,0 +1,26 @@
+{% extends "main.html" %}
+
+{% block content %}
+
+<div class="container px-5 py-5 text-center">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <h1 class="page-header-ui-title mb-3 display-6">Une erreur est apparue</h1>
+        </div>
+        <div class="col-lg-6">
+            <h3 class="mb-3 display-7">
+                Retourner sur la page de recette avec le lien ci-dessous
+            </h3>
+        </div>
+    </div>
+</div>
+
+<div class="container px-5 py-5 text-center">
+    <div class="justify-content-center">
+        <a class="btn fw-500 ms-lg-4 btn-primary px-10" href="{% url 'recipes' %}">
+    		Home
+        </a>
+    </div>
+</div>
+
+{% endblock %}

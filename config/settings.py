@@ -22,6 +22,8 @@ env = environ.Env()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+DJANGO_SETTINGS_MODULE = "config.settings"
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
@@ -31,8 +33,8 @@ SECRET_KEY = env("SECRET_KEY", default="default_value")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = env.bool('DEBUG', default=False)
-# DEBUG = False
-DEBUG = True
+DEBUG = False
+# DEBUG = True
 
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS")
 # ALLOWED_HOSTS = ["blogaurelie.herokuapp.com", "127.0.0.1", "localhost"]
@@ -68,7 +70,6 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "config.urls"
 
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 TEMPLATES = [
     {
@@ -166,6 +167,7 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_DIRS = [BASE_DIR / 'static']
 MEDIA_ROOT = BASE_DIR / 'media'
 MEDIA_URL = '/media/'
+STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
 
 
 # Default primary key field type

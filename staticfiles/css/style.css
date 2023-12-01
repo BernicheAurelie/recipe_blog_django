@@ -1,0 +1,241 @@
+body,html {
+	margin: 0;
+	padding: 0;
+	height: 100%;
+	width: 100%;
+  	position: relative;
+	background-image: linear-gradient(120deg, rgb(31,220,237,0), rgb(31,220,237,1));
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+	 display: grid;
+	 grid-template-rows: auto 1fr auto;
+	 height: 100vh;
+ }
+
+ /* body,html {
+	margin: 0;
+	padding: 0;
+ } */
+.navbar-small-bottom{
+
+	max-height: 50px;
+	width: 100%;
+}
+
+.zoom {
+	transition: transform .2s;
+	box-shadow: inset 0 0 1em rgb(31,220,237);
+}
+.zoom:hover{
+	transform: scale(1.3);
+	z-index: 1;
+	box-shadow: inset 0 0 1em rgb(31,220,237),
+    0 0 2em rgb(31,220,237,0.7);
+}
+.nav-item, .loupe {
+	transition: transform .2s;
+  }
+  .nav-item:hover {
+	transform: scale(1.2);
+  }
+
+  .loupe:hover {
+	transform: scale(3);
+  }
+a.scale {
+	text-decoration: none;
+	color: #000;
+	transition: transform .2s;
+}
+a.scale:hover {
+	transform: scale(1.2);
+  }
+a.heart-comment{
+	text-decoration: none;
+}
+.ombre {
+	box-shadow:#1fdced 0px 20px 30px,#1fdced 0px -12px 30px,#1fdced 0px 4px 6px,#1fdced 0px 12px 13px, #1fdced 0px -3px 5px;
+}
+#ingredients {
+	height : 150px;
+}
+.ingredients {
+	height : 100px;
+	overflow: auto;
+}
+.preparation {
+	height : 160px;
+	overflow: auto;
+}
+.img-card {
+	height : 250px;
+
+}
+.comment {
+	min-height: 160px;
+}
+.no_comment{
+	height : 215px;
+}
+.no_more_comment{
+	height : 71px;
+}
+.no_image{
+	height : 120px;
+}
+ul#id_rating {
+	display: flex;
+}
+ul#id_rating li{
+	display: inline-block;
+	flex: 1;
+}
+#retour_en_haut{
+    position: fixed;
+    bottom: 0;
+    right: 5px;
+    font-size: 3rem;
+	color: #000;
+}
+#retour_en_haut_blanc{
+    position: fixed;
+    bottom: 0;
+    right: 5px;
+    font-size: 3rem;
+	color: white;
+}
+.button_width{
+	width:50%;
+}
+.user_card {
+	width: 350px;
+	margin-top: auto;
+	margin-bottom: auto;
+	background-image: linear-gradient(to right, rgba(27, 3, 112, 0), rgba(27,3,12,1));
+	position: relative;
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	padding: 10px;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	-webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	-moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	border-radius: 5px;
+
+}
+
+.form_container {
+	margin-top: 20px;
+}
+
+#form-title{
+	color: #fff;
+
+}
+
+.login_btn {
+	width: 100%;
+	background: #33ccff !important;
+	color: white !important;
+}
+.login_btn:focus {
+	box-shadow: none !important;
+	outline: 0px !important;
+}
+.login_container {
+	padding: 0 2rem;
+}
+.input-group-text {
+	background: #33ccff !important;
+	color: white !important;
+	border: 0 !important;
+	border-radius: 0.25rem 0 0 0.25rem !important;
+}
+.input_user,
+.input_pass:focus {
+	box-shadow: none !important;
+	outline: 0px !important;
+}
+
+#messages{
+	background-color: grey;
+	color: #fff;
+	padding: 10px;
+	margin-top: 10px;
+}
+#inscription{
+	margin: 50px;
+}
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 2; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+/* Modal Content */
+.modal-content {
+    background-color: #3ff3db;
+    margin: auto;
+    padding: 10px;
+    width: 80%;
+}
+/* The Close Button */
+.fermer {
+    color: rgb(23 143 127);
+    float: right;
+    /* font-size: 35px; */
+    /* font-weight: 900; */
+}
+.fermer:hover {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+div.contenu {
+	display: none;
+	}
+/* .image{
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	align-items: center; 
+} */
+.image-modal {
+	display: none;
+	/* background-image: linear-gradient(120deg, rgb(31,220,237,0), rgb(31,220,237,1)); */
+	/* width: 100vw;
+	height: 100vh; */
+	/* background-color: #fff; */
+	z-index: 2;
+	/* height: 60%;
+	width: 60%; */
+  	position: fixed;
+	padding-top: 80px;
+	top: 2%;
+  	left: 2%;
+	bottom: 5%;
+	right: 5%;
+  	/* transform: translate(-50%, -50%); */
+  	/* left: 0;
+  	top: 0; */
+  	width: 80%;
+  	height: 80%;
+  	overflow: auto;
+	}
+@media screen and (min-width: 480px) {
+	.loupe {
+		transition: transform .2s;
+	  }
+	  .loupe:hover {
+		transform: scale(1.1);
+	  }
+}
