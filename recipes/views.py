@@ -90,19 +90,19 @@ def detail_recipe_view(request, recipe_id=int):
     recipe.time_created.strftime('%d-%m-%Y')
     recipe.last_updated.strftime('%d-%m-%Y')
     comments = Comment.objects.filter(recipe_id=recipe.id)
-    total_comments=len(comments)
+    len_comments=len(comments)
     rating = 0
     try:
         for comment in comments:
             rating += comment.rating
-        avg_rating = rating/total_comments
+        avg_rating = rating/len_comments
     except ZeroDivisionError:
         avg_rating = 0
-    if total_comments>0:
+    if len_comments>0:
         title=f'Note moyenne: {avg_rating}/5'
     else:
         title="Cette recette n'est pas encore notée"
-    context = {'recipe': recipe, "comments":comments, "avg_rating":avg_rating, "title":title}
+    context = {'recipe': recipe, "comments":comments, "avg_rating":avg_rating, "title":title, "len_comments":len_comments}
     return render(request, 'recipes/detail_recipe.html', context)
 
 @login_required(login_url='connexion')
@@ -154,8 +154,6 @@ def createRecipe(request):
 def modifyRecipe(request, recipe_id=int):
     context={}
     recipe = get_object_or_404(Recipe, id=recipe_id)
-    print("request.user.id == ", request.user.id)
-    print("recipe.user.id == ", recipe.user.id)
     if request.user.id == recipe.user.id:
         if request.method == 'GET':
             form = CreateRecipe(instance=recipe)
@@ -182,22 +180,10 @@ def modifyRecipe(request, recipe_id=int):
         return redirect('recipes')
     return render(request, 'recipes/create_recipe_view.html', context)
 
-# @login_required(login_url='connexion')
-# def deleteRecipe(request, recipe_id=int):
-#     if request.method == 'GET':
-#         recipe = Recipe.objects.get(id__exact=recipe_id)
-#         recipe.delete()
-#         messages.success(request, 'Ta recette a bien été supprimée')
-#         return redirect('recipes')
-    
-#     return render(request, 'recipes/my_recipes.html')
-
 @login_required(login_url='connexion')
 def deleteRecipe(request, recipe_id=int):
     recipe = get_object_or_404(Recipe, id=recipe_id)
     context = {"recipe": recipe}
-    print("request.user.id == ", request.user.id)
-    print("recipe.user.id == ", recipe.user.id)
     if request.user.id == recipe.user.id:
         if request.method == 'POST':
             recipe.delete()

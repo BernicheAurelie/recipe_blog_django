@@ -4,7 +4,11 @@
 
 <div class="container-fluid">
     <h2 class="d-flex justify-content-center mb-5">{{title}}</h2>
-    <h2 class="d-flex justify-content-center mb-5">{{note_moyenne}}</h2>
+    {% if len_comments > 0 %}
+        <h2 class="d-flex justify-content-center pb-5 mb-5">{{note_moyenne}}</h2>
+    {% else %}
+        <h2 class="d-flex justify-content-center pb-5 mb-5">Cette recette n'est pas encore notée</h2>
+    {% endif %}
     <div class="row d-flex flex-row justify-content-around gy-4">
         {% for comment in comments %}
             <div class="col-12 col-md-6 text-center">
@@ -64,7 +68,7 @@
             {% endfor %}
         {% comment %} </div> {% endcomment %}
     </div>
-    <div class="d-flex justify-content-center mb-5">
+    <div class="d-flex justify-content-center pt-3 mb-5">
         <a class="p-2 px-5 bg-white rounded border border-dark d-flex justify-content-center" href="{% url 'create_comment' recipe.id%}">Commenter la recette</a>
     </div>
 </div>

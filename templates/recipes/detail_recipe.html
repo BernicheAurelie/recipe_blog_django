@@ -88,7 +88,7 @@
     </div>
     <div class="row">
         <div class="col-12 mt-3">
-            {%if recipe.commented %}
+            {%if recipe.commented and len_comments > 0 %}
                 <h2 class="fst-italic fw-bold d-flex justify-content-center my-3">Commentaires:</h2>
                 <div class="ombre d-flex flex-column">
                 {% for comment in comments%}
@@ -110,6 +110,7 @@
                     </div>
                 {%endfor%}
                 </div>
+            {% comment %} recipe.commented but comment deleted or no commented {% endcomment %}
             {%else%}
             <div class="card card-body border border-dark mb-5">
                 Il n'y a pas encore de commentaire associé à cette recette

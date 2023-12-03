@@ -19,16 +19,16 @@ def associated_comments(request, recipe_id):
     recipe = get_object_or_404(Recipe, id=recipe_id)
     title = f'Commentaires associés à la recette: "{recipe.title}"' 
     comments = Comment.objects.filter(recipe_id=recipe_id)
-    total_comments=len(comments)
+    len_comments=len(comments)
     rating = 0
     try:
         for comment in comments:
             rating += comment.rating
-        avg_rating = rating/total_comments
+        avg_rating = rating/len_comments
     except ZeroDivisionError:
         avg_rating = 0
     note_moyenne = f'Note moyenne: {avg_rating}/5'
-    context = {"title": title, "comments": comments, "avg_rating":avg_rating, 'note_moyenne':note_moyenne, "recipe":recipe}
+    context = {"title": title, "comments": comments, "avg_rating":avg_rating, 'note_moyenne':note_moyenne, "recipe":recipe, "len_comments":len_comments}
     return render(request,"comments/associated_comments.html", context)
 
 @login_required(login_url='connexion')

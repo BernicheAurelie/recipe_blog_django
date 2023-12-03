@@ -33,8 +33,8 @@ SECRET_KEY = env("SECRET_KEY", default="default_value")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = env.bool('DEBUG', default=False)
-DEBUG = False
-# DEBUG = True
+# DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS")
 # ALLOWED_HOSTS = ["blogaurelie.herokuapp.com", "127.0.0.1", "localhost"]
