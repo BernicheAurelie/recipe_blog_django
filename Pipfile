@@ -13,6 +13,9 @@ sentry-sdk = {extras = ["django"], version = "*"}
 psycopg2 = "*"
 django-heroku = "*"
 dj-database-url = "*"
+python-dotenv = "*"
+unidecode = "*"
+pytest = "*"
 
 [dev-packages]
 
