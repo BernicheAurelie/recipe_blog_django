@@ -1,6 +1,10 @@
 body,html {
 	margin: 0;
 	padding: 0;
+ }
+ body {
+	margin: 0;
+	padding: 0;
 	height: 100%;
 	width: 100%;
   	position: relative;
@@ -9,19 +13,14 @@ body,html {
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-	 display: grid;
-	 grid-template-rows: auto 1fr auto;
-	 height: 100vh;
+	display: grid;
+	 /* grid-template-rows: auto 1fr 1fr auto; */
+	grid-template-rows: auto 1fr 1fr auto;
+	height: 100vh;
  }
 
- /* body,html {
-	margin: 0;
-	padding: 0;
- } */
-.navbar-small-bottom{
-
-	max-height: 50px;
-	width: 100%;
+#navbar-small-bottom{
+	max-height: 30px;
 }
 
 .zoom {
@@ -94,9 +93,9 @@ ul#id_rating li{
 }
 #retour_en_haut{
     position: fixed;
-    bottom: 0;
+    bottom: 30px;
     right: 5px;
-    font-size: 3rem;
+    font-size: 2.5rem;
 	color: #000;
 }
 #retour_en_haut_blanc{

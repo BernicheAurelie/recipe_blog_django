@@ -38,10 +38,10 @@ DEBUG = env.bool('DEBUG', default=False)
 # DEBUG = True
 
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS")
-# ALLOWED_HOSTS = ["blogaurelie.herokuapp.com", "127.0.0.1", "localhost"]
+# ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
 
 # CSRF_TRUSTED_ORIGINS = ["blogaurelie.herokuapp.com", "127.0.0.1", "localhost"]
-CSRF_TRUSTED_ORIGINS = ['https://*.herokuapp.com/']
+CSRF_TRUSTED_ORIGINS = ['https://recipe-blog-j0ok.onrender.com']
 
 # Application definition
 
