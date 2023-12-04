@@ -20,7 +20,7 @@ body,html {
  }
 
 #navbar-small-bottom{
-	max-height: 30px;
+	max-height: 35px;
 }
 
 .zoom {
@@ -93,7 +93,7 @@ ul#id_rating li{
 }
 #retour_en_haut{
     position: fixed;
-    bottom: 30px;
+    bottom: 100px;
     right: 5px;
     font-size: 2.5rem;
 	color: #000;
