@@ -14,6 +14,7 @@ from pathlib import Path
 import environ
 import sentry_sdk
 from dotenv import load_dotenv
+import dj_database_url
 
 load_dotenv()
 
@@ -32,9 +33,9 @@ DJANGO_SETTINGS_MODULE = "config.settings"
 SECRET_KEY = env("SECRET_KEY", default="default_value")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = env.bool('DEBUG', default=False)
+DEBUG = env.bool('DEBUG', default=False)
 # DEBUG = False
-DEBUG = True
+# DEBUG = True
 
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS")
 # ALLOWED_HOSTS = ["blogaurelie.herokuapp.com", "127.0.0.1", "localhost"]
@@ -93,16 +94,16 @@ WSGI_APPLICATION = "config.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "RECIPE_BLOG_DB",
-        "USER": "recipe_blog_django",
-        "PASSWORD": env("DB_PASSWORD"),
-        "HOST": "localhost",
-        "PORT": "51706",
-    }
-}
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql",
+#         "NAME": "RECIPE_BLOG_DB",
+#         "USER": "recipe_blog_django",
+#         "PASSWORD": env("DB_PASSWORD"),
+#         "HOST": "localhost",
+#         "PORT": "51706",
+#     }
+# }
 
 # DATABASES = {
 #     "default": env.db(
@@ -110,12 +111,9 @@ DATABASES = {
 #     )
 # }
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
+DATABASES = {
+    'default': dj_database_url.parse(env('DATABASE_URL'))
+}
 
 
 # Password validation
