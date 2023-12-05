@@ -94,16 +94,16 @@ WSGI_APPLICATION = "config.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.postgresql",
-#         "NAME": "RECIPE_BLOG_DB",
-#         "USER": "recipe_blog_django",
-#         "PASSWORD": env("DB_PASSWORD"),
-#         "HOST": "localhost",
-#         "PORT": "51706",
-#     }
-# }
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "RECIPE_BLOG_DB",
+        "USER": "recipe_blog_django",
+        "PASSWORD": env("DB_PASSWORD"),
+        "HOST": "localhost",
+        "PORT": "51706",
+    }
+}
 
 # DATABASES = {
 #     "default": env.db(
@@ -111,9 +111,9 @@ WSGI_APPLICATION = "config.wsgi.application"
 #     )
 # }
 
-DATABASES = {
-    'default': dj_database_url.parse(env('DATABASE_URL'))
-}
+# DATABASES = {
+#     'default': dj_database_url.parse(env('DATABASE_URL'))
+# }
 
 # AWS S3 BUCKET 
 AWS_S3_ACCESS_KEY_ID = env("AWS_S3_ACCESS_KEY_ID")
