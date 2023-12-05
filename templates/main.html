@@ -38,9 +38,12 @@
         {% endblock %}
     </section>
     <section>
-        <div>
+        {% comment %}
+        # now back to top in fixed footer navbar
+         <div>
             <a href="#" id="retour_en_haut">&#x21EF;</a>
-        </div>
+        </div> 
+        {% endcomment %}
     </section>
     <footer class="mt-5">
         {% include 'footer.html' %}
