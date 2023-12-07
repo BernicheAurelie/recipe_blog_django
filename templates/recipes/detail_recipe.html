@@ -32,7 +32,7 @@
                             </div>
                         {%if recipe.image %}
                             <div class="card card-body border-dark">
-                                <img src="{{post.image.url}}" alt="image" class="img-thumbnail w-50 mx-auto d-block zoom">
+                                <img src="{{recipe.image.url}}" alt="image" class="img-thumbnail w-50 mx-auto d-block">
                                 {% comment %} <img src="{% get_media_prefix %}{{recipe.image}}" alt="image" class="img-thumbnail w-25"> {% endcomment %}
                             </div>
                         {% else %}
@@ -73,10 +73,24 @@
                                             <a class="p-2 rounded border border-dark" href="{% url 'delete_recipe' recipe.id%}">Supprimer</a>
                                         </div>
                                     {% elif user.is_authenticated %}
-                                            <a class="p-2 rounded border border-dark" href="{% url 'recipes' %}">Retour aux recettes</a>
+                                        <div class="p-3 mx-2 bd-highlight">
+                                            <a class="p-2 rounded border border-dark" href="{% url 'create_comment' recipe.id%}">Commenter</a>
+                                        </div>
                                     {% else %}
-                                            <a class="p-2 rounded border border-dark" href="{% url 'connexion' %}">Commenter cette recette</a>
+                                        <div class="p-3 mx-2 bd-highlight">
+                                            <a class="p-2 rounded border border-dark" href="{% url 'connexion' %}">Commenter</a>
+                                        </div>
+                                        <div class="p-3 bd-highlight">
+                                            <a class="p-2 rounded border border-dark" href="{% url 'recipes' %}">Retour</a>
+                                        </div>
                                     {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card card-body border-dark">
+                                <div class="row d-flex">
+                                    <div class="col-12 d-flex align-items-center justify-content-center">
+                                        <a class="p-2 rounded border border-dark" href="{% url 'recipes' %}">Retour aux recettes</a>
                                     </div>
                                 </div>
                             </div>
@@ -91,7 +105,7 @@
         <div class="col-12 mt-3">
             {%if recipe.commented and len_comments > 0 %}
                 <h2 class="fst-italic fw-bold d-flex justify-content-center my-3">Commentaires:</h2>
-                <div class="ombre d-flex flex-column">
+                <div class="ombre d-flex flex-column mb-5">
                 {% for comment in comments%}
                     <div class="card card-body border-dark">
                         <div class="">

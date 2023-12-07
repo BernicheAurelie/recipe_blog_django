@@ -87,13 +87,22 @@
                                         <a class="px-2 py-1 rounded border border-dark" href="{% url 'delete_recipe' post.id%}">Supprimer</a>
                                     </div>   
                                 </div>
-                            {%else%}
+                            {%elif user.is_authenticated %}
                             <div class="">
                                 <h5 class="d-flex justify-content-center fst-italic">
                                     Publiée par {{post.user|capfirst}} le {{post.last_updated|date:"d N Y"}}
                                 </h5>
                                 <div class="p-3 bd-highlight d-flex justify-content-center">
                                     <a class="px-2 py-1 rounded border border-dark" href="{% url 'create_comment' post.id%}">Commenter</a>
+                                </div>
+                            </div>
+                            {%else %}
+                            <div class="">
+                                <h5 class="d-flex justify-content-center fst-italic">
+                                    Publiée par {{post.user|capfirst}} le {{post.last_updated|date:"d N Y"}}
+                                </h5>
+                                <div class="p-3 bd-highlight d-flex justify-content-center">
+                                    <a class="px-2 py-1 rounded border border-dark" href="{% url 'connexion' %}">Commenter</a>
                                 </div>
                             </div>
                             {% endif %}
