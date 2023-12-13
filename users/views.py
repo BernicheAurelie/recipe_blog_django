@@ -4,8 +4,8 @@ from django.contrib import messages
 from django.views.generic.edit import FormView
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_protect
-from .forms import CreerUtilisateur, ModifierUtilisateur, ContactForm
-from .models import User
+from users.forms import CreerUtilisateur, ModifierUtilisateur, ContactForm
+from users.models import User
 from utils import logger
 
 
@@ -32,13 +32,13 @@ def inscriptionPage(request):
 
 @login_required(login_url='connexion')
 def profilUtilisateur(request, user_id=int):
-    logger.info("in profilUtilisateur to user id:", user_id)
+    logger.info("in profilUtilisateur")
     context={}
     return render(request, 'users/profil.html', context)
 
 @login_required(login_url='connexion')
 def modifierUtilisateur(request, user_id=int):
-    logger.info("in modifierUtilisateur to user id:", user_id)
+    logger.info("in modifierUtilisateur")
     title = "Modification du profil"
     context = {'title': title}
     user = User.objects.get(id__exact=user_id)
@@ -59,17 +59,15 @@ def modifierUtilisateur(request, user_id=int):
             else:
                 messages.warning(request, f"Les mots de passe ne correspondent pas {user.username}")
         else:
-            logger.error("Passwords do not match")
-            for field in form:
-                logger.error("Field Error:", field.name,  field.errors)
             logger.info("get request to get profile ok but form seems not be valid")
+            logger.error("Passwords do not match")
             messages.warning(request, f"Les mots de passe ne correspondent pas {user.username}")
             # return render(request, 'users/modify_user_view.html', context)
     return render(request, 'users/modify_user_view.html', context)
 
 @login_required(login_url='connexion')
 def desactiverUtilisateur(request, user_id=int):
-    logger.info("in desactiverUtilisateur to user id:", user_id)
+    logger.info("in desactiverUtilisateur")
     title = "suppression du profil"
     context = {'title': title}
     user = User.objects.get(id__exact=user_id)
@@ -107,3 +105,4 @@ class ContactFormView(FormView):
         # It should return an HttpResponse.
         form.send_email()
         return super().form_valid(form)
+    

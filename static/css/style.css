@@ -72,6 +72,10 @@ a.heart-comment{
 	height : 250px;
 
 }
+.img-proportionnelle{
+	width:auto;
+	height:100%;
+}
 .comment {
 	min-height: 160px;
 }
