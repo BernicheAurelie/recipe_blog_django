@@ -57,8 +57,8 @@ def search_view(request):
 def recipes_index(request):
     titre = "Bienvenue sur notre forum culinaire"
     today = datetime.date.today()
-    recipes = Recipe.objects.select_related("user").all()
-    recipes = Recipe.objects.annotate(
+    # recipes = Recipe.objects.select_related("user").all()
+    recipes = Recipe.objects.select_related("user").annotate(
         num_comments=Count("comment")
         ).annotate(
             avg_rating=Avg("comment__rating")
