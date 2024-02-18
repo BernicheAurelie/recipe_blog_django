@@ -43,6 +43,10 @@ body,html {
   .loupe:hover {
 	transform: scale(3);
   }
+  /* limit search by category width */
+.search_field{
+	max-width: 20%;
+}
 a.scale {
 	text-decoration: none;
 	color: #000;
@@ -241,4 +245,8 @@ div.contenu {
 	  .loupe:hover {
 		transform: scale(1.1);
 	  }
+	  /* limit search by category width */
+	.search_field{
+		max-width: 120px;
+	}
 }

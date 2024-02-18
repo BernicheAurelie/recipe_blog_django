@@ -54,6 +54,46 @@ def search_view(request):
                 context = {"titre": titre, 'posts': posts, 'comments': comments, 'today': today}
                 return render(request, 'recipes/recipes.html', context)
 
+def search_by_category_view(request):
+    comments=[]
+    today = datetime.date.today()
+    titre = "Bienvenue sur notre forum culinaire"
+
+    if request.method == "GET":
+        name = request.GET.get("category_search")
+        name = strip_tags(name)
+        if name is not None:
+            recipes = Recipe.objects.annotate(num_comments=Count("comment")).filter(
+                # Q(recipe_tag=name)
+                recipe_tag=name
+                )
+            if not recipes:
+                titre = "Il n'y a pas encore de recette correspondant à la recherche."
+                context = {"titre": titre}
+                return render(request, 'recipes/recipes.html', context)
+            else:
+                len_recipes = len(recipes)
+                if len_recipes>=2:
+                    titre = f"Il y a {len_recipes} recettes correspondant à la recherche."
+                elif len_recipes == 1:
+                    titre = f"Il y a {len_recipes} recette correspondant à la recherche."
+                # get three first associated comments:
+                for recipe in recipes:
+                    associated_comments = Comment.objects.filter(recipe_id=recipe.id)
+                    comments.extend(associated_comments[:3])
+                    recipe.time_created.strftime('%d-%m-%Y')
+                    recipe.last_updated.strftime('%d-%m-%Y')
+                posts = sorted(recipes,
+                        key=lambda post: post.time_created,
+                        reverse=True
+                    )
+                comments = sorted(comments,
+                        key=lambda comment: comment.time_created,
+                        reverse=True
+                    )
+                context = {"titre": titre, 'posts': posts, 'comments': comments, 'today': today}
+                return render(request, 'recipes/recipes.html', context)
+
 def recipes_index(request):
     titre = "Bienvenue sur notre forum culinaire"
     today = datetime.date.today()

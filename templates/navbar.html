@@ -36,9 +36,9 @@
                   <li class="nav-item mx-1 pt-2 pt-lg-3 pt-xl-2 px-lg-0 pb-2 pb-md-0">
                       <a class="nav-link text-white" href="/users/deconnexion/">Déconnexion</a>
                   </li>
-                  <li class="nav-item mx-1 pt-lg-2 pt-xl-1">
-                    <form class="d-flex me-auto" role="search" action="{% url 'search_view' %}" method="get">
-                        <select class="form-control m-2 p-2 bd-highlight" aria-label="select categories" name="recherche">
+                  <li class="nav-item mx-1 me-5 pt-lg-2 pt-xl-1 search_field">
+                    <form class="d-flex me-auto" role="search" action="{% url 'search_by_category_view' %}" method="get">
+                        <select class="form-control m-2 p-2 bd-highlight" aria-label="select categories" name="category_search">
                           <option selected>Catégorie:</option>
                           <option value="Apéritif">Apéritif</option>
                           <option value="Plat">Plat</option>
@@ -80,9 +80,9 @@
                   <li class="nav-item mx-1 pt-2">
                       <a class="nav-link text-white" href="{%url 'recipes'%}">Les recettes</a>
                   </li>
-                  <li class="nav-item mx-1">
-                    <form class="form-inline d-flex me-auto" role="search" action="{% url 'search_view' %}" method="get">
-                        <select class="form-control m-2 p-2 bd-highlight" aria-label="select categories" name="recherche">
+                  <li class="nav-item me-5 search_field" >
+                    <form class="form-inline d-flex me-auto" role="search" action="{% url 'search_by_category_view' %}" method="get">
+                        <select class="form-control m-2 p-2 bd-highlight" aria-label="select categories" name="category_search">
                           <option selected>Catégorie:</option>
                           <option value="Apéritif">Apéritif</option>
                           <option value="Plat">Plat</option>
