@@ -25,7 +25,7 @@ def search_view(request):
                 Q(title__icontains=name)|
                 Q(ingredients__icontains=name)|
                 Q(description__icontains=name)|
-                Q(recipe_tag__icontains=name)
+                Q(recipe_tag=name)
                 )
             if not recipes:
                 titre = "Il n'y a pas encore de recette correspondant à la recherche."
