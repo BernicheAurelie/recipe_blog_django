@@ -44,9 +44,9 @@ body,html {
 	transform: scale(3);
   }
   /* limit search by category width */
-.search_field{
-	max-width: 20%;
-}
+/* .search_field{
+	min-width: 100px;
+} */
 a.scale {
 	text-decoration: none;
 	color: #000;
@@ -247,6 +247,6 @@ div.contenu {
 	  }
 	  /* limit search by category width */
 	.search_field{
-		max-width: 120px;
+		max-width: 160px;
 	}
 }
