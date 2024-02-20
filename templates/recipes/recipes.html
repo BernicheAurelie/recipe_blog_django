@@ -41,7 +41,7 @@
                             {%if post.image %}
                                 <div class="show_image_modal img-card d-flex justify-content-center">
                                     {% comment %} <img src="{% get_media_prefix %}{{post.image}}" alt="image" class="img-thumbnail w-50 mx-auto d-block zoom"> {% endcomment %}
-                                    <img src="{{post.image.url}}" alt="image" class="img-proportionnelle mx-auto d-block zoom">
+                                    <img src="{{post.image.url}}" alt="{{post.title}}" class="img-proportionnelle mx-auto d-block zoom">
                                 
                                 </div>
                                 <div class="image modal">
@@ -54,7 +54,7 @@
                                             Voir pour mettre un w-75 en fonction des retours...
                                             <img src="{% get_media_prefix %}{{post.image}}" alt="image" class="shadow w-50 m-auto d-block"> 
                                             {% endcomment %}
-                                            <img src="{{post.image.url}}" alt="image" class="img-thumbnail w-50 mx-auto d-block">
+                                            <img src="{{post.image.url}}" alt="{{post.title}}" class="img-thumbnail w-50 mx-auto d-block">
                                         </div>
                                         <div class="row bg-white modal-footer">
                                             <button class="close_image border border-0 bg-white text-end fs-5">X</button>
