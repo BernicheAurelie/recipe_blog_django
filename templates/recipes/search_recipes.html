@@ -1,0 +1,290 @@
+{% extends 'main.html' %}
+{% block content %}
+{% load static %}
+{% load my_tags %}
+
+
+
+<div class="d-flex justify-content-center">
+    <h2 class="d-flex justify-content-center p-2 m-2">{{titre}}</h2>    
+</div>
+<div class="container-fluid">
+    <div class="row d-flex flex-row justify-content-around gy-4">
+        {% for post in posts %}
+            <div class="col-12 col-md-6">
+                <div class="mb-5">
+                    <div class="d-flex flex-column">
+                        <div class="card card-body border-dark"> 
+                            {%if post.len_title > 20%}
+                                <h3 class="d-flex justify-content-center">
+                                    <a href="{% url 'detail_recipe' post.id %}" class="scale">
+                                        {{post.title|truncatechars:20}}
+                                    </a>
+                                </h3>
+                            {%else%}
+                                <h3 class="d-flex justify-content-center">
+                                    {{post.title|truncatechars:20}}
+                                </h3>
+                            {%endif%}
+                        </div>
+                        <div class="card card-body border-dark">
+                            {% if post.ingredients == None %}
+                                    <i>Détail des ingrédients non précisé</i>
+                            {% else %}
+                                <h4 class="d-flex justify-content-center">Ingrédients:</h4>
+                                <p class="ingredients">{{post.ingredients|linebreaksbr|remove_excess_linebreaks}}</p>
+                            {% endif %}
+                        </div>    
+                        <div class="card card-body border-dark"> 
+                            <h4 class="d-flex justify-content-center">Préparation:</h4>
+                            <p class="preparation">{{post.description|linebreaksbr|remove_excess_linebreaks}}</p>
+                        </div>
+                        <div class="card card-body border-dark"> 
+                            {%if post.image %}
+                                <div class="show_image_modal img-card d-flex justify-content-center">
+                                    {% comment %} <img src="{% get_media_prefix %}{{post.image}}" alt="image" class="img-thumbnail w-50 mx-auto d-block zoom"> {% endcomment %}
+                                    <img src="{{post.image.url}}" alt="{{post.title}}" class="img-proportionnelle mx-auto d-block zoom">
+                                
+                                </div>
+                                <div class="image modal">
+                                    <div class="container pt-5 modal-body">
+                                        <div class="row py-3 d-flex justify-content-center bg-white fs-4">
+                                            {{post.title|truncatechars:20}}
+                                        </div>
+                                        <div class="row bg-white">
+                                            {% comment %}
+                                            Voir pour mettre un w-75 en fonction des retours...
+                                            <img src="{% get_media_prefix %}{{post.image}}" alt="image" class="shadow w-50 m-auto d-block"> 
+                                            {% endcomment %}
+                                            <img src="{{post.image.url}}" alt="{{post.title}}" class="img-thumbnail w-50 mx-auto d-block">
+                                        </div>
+                                        <div class="row bg-white modal-footer">
+                                            <button class="close_image border border-0 bg-white text-end fs-5">X</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% else %}
+                                <p class="no_image "> Aucune image associée</p>
+                            {% endif %}
+                        </div>
+                        <div class="card card-body border-dark d-flex justify-content-center">
+                            {% if post.recipe_tag %}
+                                <h4 class="d-flex justify-content-center">{{post.recipe_tag}}</h4>
+                            {% else %}
+                                <i>Catégorie non renseignée</i>
+                            {% endif %}
+                        </div>
+                        <div class="card card-body border-dark d-flex justify-content-center"> 
+                            {% if user.id == post.user.id %}
+                                <div class="row">
+                                    <div class="p-3 bd-highlight d-flex justify-content-center">
+                                        <a class="px-2 py-1 rounded border border-dark" href="{% url 'create_comment' post.id%}">Commenter</a>
+                                    </div>
+                                </div>
+                                <div class="row d-flex flex-row justify-content-between">
+                                    <div class="col-5 mx-2 bd-highlight d-flex justify-content-center">
+                                        <a class="px-2 py-1 rounded border border-dark" href="{% url 'modify_recipe' post.id%}">Modifier</a>
+                                    </div>
+                                    <div class="col-5 d-flex justify-content-center bd-highlight">
+                                        <a class="px-2 py-1 rounded border border-dark" href="{% url 'delete_recipe' post.id%}">Supprimer</a>
+                                    </div>   
+                                </div>
+                            {%elif user.is_authenticated %}
+                            <div class="">
+                                <h5 class="d-flex justify-content-center fst-italic">
+                                    Publiée par {{post.user|capfirst}} le {{post.last_updated|date:"d N Y"}}
+                                </h5>
+                                <div class="p-3 bd-highlight d-flex justify-content-center">
+                                    <a class="px-2 py-1 rounded border border-dark" href="{% url 'create_comment' post.id%}">Commenter</a>
+                                </div>
+                            </div>
+                            {%else %}
+                            <div class="">
+                                <h5 class="d-flex justify-content-center fst-italic">
+                                    Publiée par {{post.user|capfirst}} le {{post.last_updated|date:"d N Y"}}
+                                </h5>
+                                <div class="p-3 bd-highlight d-flex justify-content-center">
+                                    <a class="px-2 py-1 rounded border border-dark" href="{% url 'connexion' %}">Commenter</a>
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="card card-body border-dark">
+                            {% if post.commented %}
+                                {%if post.num_comments >= 3 %}
+                                    {% for comment in comments%}
+                                        {% if comment.recipe.id == post.id%}
+                                            <button class="afficher btn btn-light btn-link">
+                                                {{comment.title|truncatechars:20}} &#9755; {{comment.rating}}/5
+                                            </button>
+                                            <div class="contenu">
+                                                <ul>
+                                                    <li class="list-group-item">
+                                                        <p class="ingredients">{{comment.description|linebreaksbr|remove_excess_linebreaks|linebreaksbr|remove_excess_linebreaks}}</p><br>
+                                                        <i class="d-flex justify-content-end"> &#40;{{comment.user|capfirst}}, il y a {{comment.last_updated|timesince|upto:',' }}&#41; </i>
+                                                    </li>
+                                                    <button class="fermer">fermer</button>  
+                                                </ul>
+                                            </div>
+                                        {%endif%}
+                                    {%endfor%}
+                                {%elif post.num_comments == 2 %}
+                                    {% for comment in comments%}
+                                        {% if comment.recipe.id == post.id%}
+                                            <button class="afficher btn btn-light btn-link">{{comment.title|truncatechars:20|truncatechars:20}} &#9755; {{comment.rating}}/5</button>
+                                            <div class="contenu">
+                                                <ul>
+                                                    <li class="list-group-item">
+                                                        <p class="">{{comment.description|linebreaksbr|remove_excess_linebreaks}}</p><br>
+                                                        <i class="d-flex justify-content-end"> &#40;{{comment.user|capfirst}}, il y a {{comment.last_updated|timesince|upto:',' }}&#41; </i>
+                                                    </li>
+                                                    <button class="fermer">fermer</button>  
+                                                </ul>
+                                            </div>
+                                        {%endif%}
+                                    {%endfor%}
+                                    <button class="btn btn-light disabled d-flex justify-content-center">Pas d'autre commentaire</button>
+                                {% elif post.num_comments == 1 %}
+                                    {% for comment in comments%}
+                                        {% if comment.recipe.id == post.id%}
+                                            <button class="afficher btn btn-light btn-link">{{comment.title|truncatechars:20}} &#9755; {{comment.rating}}/5</button>
+                                            <div class="contenu">
+                                                <ul>
+                                                    <li class="list-group-item">
+                                                        <p class="">{{comment.description|linebreaksbr|remove_excess_linebreaks}}</p><br>
+                                                        <i class="d-flex justify-content-end"> &#40;{{comment.user|capfirst}}, il y a {{comment.last_updated|timesince|upto:',' }}&#41; </i>
+                                                    </li>
+                                                    <button class="fermer">fermer</button>  
+                                                </ul>
+                                            </div>
+                                        {%endif%}
+                                    {%endfor%}
+                                    <button class="btn btn-light disabled d-flex justify-content-center">Pas d'autre commentaire</button>
+                                    <button class="btn btn-light disabled d-flex justify-content-center">Commentez là!</button>
+                                {% comment %} if post.commented but comment deleted {% endcomment %}
+                                {%else%}
+                                    <button class="btn btn-light disabled d-flex justify-content-center">N'hésitez pas</button>
+                                    <button class="btn btn-light disabled d-flex justify-content-center">à commenter</button>
+                                    <button class="btn btn-light disabled d-flex justify-content-center">cette recette</button>
+                                {% endif %}
+                            {%else%}
+                                <button class="btn btn-light disabled d-flex justify-content-center">N'hésitez pas</button>
+                                <button class="btn btn-light disabled d-flex justify-content-center">à commenter</button>
+                                <button class="btn btn-light disabled d-flex justify-content-center">cette recette</button> 
+                            {% endif %}
+                        </div>
+                        <div class="card card-body border-dark d-flex flex-row justify-content-between">
+                            <div class="bd-highlight pt-1">
+                                <a href="{%url 'create_comment' post.id%}" class="heart-comment">
+                                    <span>
+                                        {% if post.avg_rating < 0.5 %}
+                                            <i class="bi bi-heart"></i>
+                                            <i class="bi bi-heart"></i>
+                                            <i class="bi bi-heart"></i>
+                                            <i class="bi bi-heart"></i>
+                                            <i class="bi bi-heart"></i>
+                                        {% elif post.avg_rating >= 0.5 and post.avg_rating < 1 %}
+                                            <i class="bi bi-heart-half"></i>
+                                            <i class="bi bi-heart"></i>
+                                            <i class="bi bi-heart"></i>
+                                            <i class="bi bi-heart"></i>
+                                            <i class="bi bi-heart"></i>
+                                        {% elif post.avg_rating >= 1 and post.avg_rating < 1.5 %}
+                                            <i class="bi bi-heart-fill"></i>
+                                            <i class="bi bi-heart"></i>
+                                            <i class="bi bi-heart"></i>
+                                            <i class="bi bi-heart"></i>
+                                            <i class="bi bi-heart"></i>
+                                        {% elif post.avg_rating >= 1.5 and post.avg_rating < 2 %}
+                                            <i class="bi bi-heart-fill"></i>
+                                            <i class="bi bi-heart-half"></i>
+                                            <i class="bi bi-heart"></i>
+                                            <i class="bi bi-heart"></i>
+                                            <i class="bi bi-heart"></i>
+                                        {% elif post.avg_rating >= 2 and post.avg_rating < 2.5 %}
+                                            <i class="bi bi-heart-fill"></i>
+                                            <i class="bi bi-heart-fill"></i>
+                                            <i class="bi bi-heart"></i>
+                                            <i class="bi bi-heart"></i>
+                                            <i class="bi bi-heart"></i>
+                                        {% elif post.avg_rating >= 2.5 and post.avg_rating < 3 %}
+                                            <i class="bi bi-heart-fill"></i>
+                                            <i class="bi bi-heart-fill"></i>
+                                            <i class="bi bi-heart-half"></i>
+                                            <i class="bi bi-heart"></i>
+                                            <i class="bi bi-heart"></i>
+                                        {% elif post.avg_rating >= 3 and post.avg_rating < 3.5 %}
+                                            <i class="bi bi-heart-fill"></i>
+                                            <i class="bi bi-heart-fill"></i>
+                                            <i class="bi bi-heart-fill"></i>
+                                            <i class="bi bi-heart"></i>
+                                            <i class="bi bi-heart"></i>
+                                        {% elif post.avg_rating >= 3.5 and post.avg_rating < 4 %}
+                                            <i class="bi bi-heart-fill"></i>
+                                            <i class="bi bi-heart-fill"></i>
+                                            <i class="bi bi-heart-fill"></i>
+                                            <i class="bi bi-heart-half"></i>
+                                            <i class="bi bi-heart"></i>
+                                        {% elif post.avg_rating >= 4 and post.avg_rating < 4.5 %}
+                                            <i class="bi bi-heart-fill"></i>
+                                            <i class="bi bi-heart-fill"></i>
+                                            <i class="bi bi-heart-fill"></i>
+                                            <i class="bi bi-heart-fill"></i>
+                                            <i class="bi bi-heart"></i>
+                                        {% elif post.avg_rating >= 4.5 and post.avg_rating < 5 %}
+                                            <i class="bi bi-heart-fill"></i>
+                                            <i class="bi bi-heart-fill"></i>
+                                            <i class="bi bi-heart-fill"></i>
+                                            <i class="bi bi-heart-half"></i>
+                                            <i class="bi bi-heart"></i>
+                                        {% elif post.avg_rating == 5 %}
+                                            <i class="bi bi-heart-fill"></i>
+                                            <i class="bi bi-heart-fill"></i>
+                                            <i class="bi bi-heart-fill"></i>
+                                            <i class="bi bi-heart-fill"></i>
+                                            <i class="bi bi-heart-fill"></i>
+                                        {%endif%}
+                                    </span>
+                                </a>
+                                    <span>
+                                        {% if post.num_comments >= 1 %}
+                                            <a class="" href="{%url 'associated_comments' post.id%}">
+                                                <strong>({{post.num_comments}} com)</strong>
+                                            </a>
+                                        {% else %}
+                                            <a class="" href="{%url 'create_comment' post.id%}">
+                                                <strong>({{post.num_comments}} com)</strong>
+                                            </a>
+                                        {% endif %}
+                                    </span>
+                            </div>
+                            <div class="bd-highlight my-1">
+                                <a class="px-2 py-1 rounded border border-dark" href="{%url 'detail_recipe' post.id%}">
+                                    En savoir plus
+                                </a>           
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+<aside>
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <h4>{{comment.title}} &#9755; {{comment.rating}}/5</h4>
+                        <p>{{comment.description}} </p><br>
+                        <small class="d-flex justify-content-end"> Commenté par {{comment.user|capfirst}} </small> 
+                        <small class="d-flex justify-content-end">le {{comment.time_created}}, mis à jour le {{comment.last_updated}}</small>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</aside>
+{% endblock %}

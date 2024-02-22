@@ -30,13 +30,13 @@ def search_view(request):
             if not recipes:
                 titre = "Il n'y a pas encore de recette correspondant à la recherche."
                 context = {"titre": titre}
-                return render(request, 'recipes/recipes.html', context)
+                return render(request, 'recipes/search_recipes.html', context)
             else:
                 len_recipes = len(recipes)
                 if len_recipes>=2:
-                    titre = f"Il y a {len_recipes} recettes correspondant à la recherche."
+                    titre = f"{len_recipes} recettes correspondent à la recherche."
                 elif len_recipes == 1:
-                    titre = f"Il y a {len_recipes} recette correspondant à la recherche."
+                    titre = f"{len_recipes} recette correspond à la recherche."
                 # get three first associated comments:
                 for recipe in recipes:
                     associated_comments = Comment.objects.filter(recipe_id=recipe.id)
@@ -52,7 +52,7 @@ def search_view(request):
                         reverse=True
                     )
                 context = {"titre": titre, 'posts': posts, 'comments': comments, 'today': today}
-                return render(request, 'recipes/recipes.html', context)
+                return render(request, 'recipes/search_recipes.html', context)
 
 def search_by_category_view(request):
     comments=[]
@@ -70,13 +70,13 @@ def search_by_category_view(request):
             if not recipes:
                 titre = "Il n'y a pas encore de recette correspondant à la recherche."
                 context = {"titre": titre}
-                return render(request, 'recipes/recipes.html', context)
+                return render(request, 'recipes/search_recipes.html', context)
             else:
                 len_recipes = len(recipes)
                 if len_recipes>=2:
-                    titre = f"Il y a {len_recipes} recettes correspondant à la recherche."
+                    titre = f"{len_recipes} recettes correspondent à la recherche."
                 elif len_recipes == 1:
-                    titre = f"Il y a {len_recipes} recette correspondant à la recherche."
+                    titre = f"{len_recipes} recette correspond à la recherche."
                 # get three first associated comments:
                 for recipe in recipes:
                     associated_comments = Comment.objects.filter(recipe_id=recipe.id)
@@ -92,10 +92,10 @@ def search_by_category_view(request):
                         reverse=True
                     )
                 context = {"titre": titre, 'posts': posts, 'comments': comments, 'today': today}
-                return render(request, 'recipes/recipes.html', context)
+                return render(request, 'recipes/search_recipes.html', context)
 
 def recipes_index(request):
-    titre = "Bienvenue sur notre forum culinaire"
+    titre = "Les recettes Cook And Love"
     today = datetime.date.today()
     # recipes = Recipe.objects.select_related("user").all()
     recipes = Recipe.objects.select_related("user").annotate(
@@ -173,7 +173,7 @@ def my_recipes(request):
 
 @login_required(login_url='connexion')
 def createRecipe(request):
-    title = 'Décris nous ta recette:'
+    title = 'Décris ta recette:'
     if request.method == 'POST':
         form = CreateRecipe(request.POST, request.FILES)
         if form.is_valid():
