@@ -3,9 +3,12 @@
 {% load static %}
 {% load my_tags %}
 
-<div class="d-flex justify-content-center">
+<section class="pb-5">
+    {% include 'home.html' %}
+</section>
+{% comment %} <div class="d-flex justify-content-center">
     <h3 class="d-flex justify-content-center p-2 m-2">{{titre}}</h3>    
-</div>
+</div> {% endcomment %}
 <div class="container-fluid">
     <div class="row d-flex flex-row justify-content-around gy-4">
         {% for post in posts %}
