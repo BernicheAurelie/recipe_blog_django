@@ -4,70 +4,44 @@
 
 
     <div class="container">
-      <h2>Un projet de création web ?</h2>
-      <h3>N'hésitez pas à me contacter</h3>
-
-      <div class="row pb-4 my-4">
-        <div class="col-12 col-md-5">
-          <img src={% static 'img/website.jpg' %} class="img-thumbnail w-100" alt="Image d'un site web">
+        <div class="row pb-4 my-4 text-center">
+            <h2>Un problème ou un commentaire sur ce site?</h2>
+            <h2>Besoin d'aide pour la connection ou pour la publication de vos recettes?</h2>
+            <h3>N'hésitez pas à me contacter</h3>
         </div>
-        <div class="col-12 offset-md-1 col-md-6" id="contact">
-            <!-- <div class="h-100 w-100 py-5"> -->
-            <form action="https://formspree.io/f/mrgwwzyn" method="post">
-                {% csrf_token %}
-                <div class="row">
-                    <div class="col-6 mb-3">
-                        <label for="nom" class="form-label">Nom</label>
-                        <input type="text" name="nom" class="form-control border-dark" id="nom" placeholder="Nom">
+        <div class="row pb-4 my-4">
+            <div class="col-12 col-md-5">
+                <img src={% static 'img/cooking-time.png' %} class="border border-dark rounded w-100" alt="Image d'une cuisine">
+            </div>
+            <div class="col-12 offset-md-1 col-md-6" id="contact">
+                <!-- <div class="h-100 w-100 py-5"> -->
+                <form action="https://formspree.io/f/mrgwwzyn" method="post">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <label for="nom" class="form-label">Nom</label>
+                            <input type="text" name="nom" class="form-control border-dark" id="nom" placeholder="Nom">
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label for="prenom" class="form-label">Prénom</label>
+                            <input type="text" name="prenom" class="form-control border-dark" id="prenom" placeholder="Prénom">
+                        </div>
+                        <div class="col-12 mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" name="email" class="form-control border-dark" id="email" placeholder="email@example.com">
+                        </div>
+                        <div class="col-12 mb-3">
+                            <label for="message" class="form-label">Votre message</label>
+                            <textarea name="message" class="form-control border-dark" id="message" rows="3"></textarea>
+                        </div>
+                        <div class="col-12 mb-3">
+                            <button type="submit" class="rounded w-100">Envoyer</button>
+                        </div>
                     </div>
-                    <div class="col-6 mb-3">
-                        <label for="prenom" class="form-label">Prénom</label>
-                        <input type="text" name="prenom" class="form-control border-dark" id="prenom" placeholder="Prénom">
-                    </div>
-                    <div class="col-12 mb-3">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="email" name="email" class="form-control border-dark" id="email" placeholder="email@example.com">
-                    </div>
-                    <div class="col-12 mb-3">
-                        <label for="message" class="form-label">Votre message</label>
-                        <textarea name="message" class="form-control border-dark" id="message" rows="3"></textarea>
-                    </div>
-                    <div class="col-12 mb-3">
-                        <button type="submit" class="rounded w-100">Envoyer</button>
-                    </div>
-                </div>
-            </form>
-            <!-- </div> -->
+                </form>
+                <!-- </div> -->
+            </div>
         </div>
-      </div>
     </div>
-{% comment %} 
-<div class="d-flex justify-content-center m-3">
-    
-    <form action="" method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <div class="d-flex flex-column m-3 ombre bg-white border border-dark rounded">
-            <div class="card card-body border-white">Titre: {{form.title}}</div>
-            <div class="card card-body border-white">Description: {{form.description}}</div>
-            <div class="card card-body border-white">Note:</div>
-            <div class="card card-body border-white">
-                <ul id="id_rating">
-                    {% for radio in form.rating %}
-                        <li id="id_rating">
-                            {{ radio }}
-                        </li>
-                    {% endfor %}
-                </ul>
-            </div>
-            <div class="card card-body border-white">
-                <button type="submit" class="rounded">Commenter</button>
-            </div>
-        </div>
-   
-    </form>
-    
-</div>
-
-{% endcomment %}
 
 {% endblock %}
